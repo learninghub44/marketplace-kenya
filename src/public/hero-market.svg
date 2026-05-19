@@ -1,0 +1,18 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/public/hero-market.svg b/public/hero-market.svg
+new file mode 100644
+index 0000000000000000000000000000000000000000..8b00eeb29cf90f13f49d77d3630a078e897ec51d
+--- /dev/null
++++ b/public/hero-market.svg
+@@ -0,0 +1,8 @@
++<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='700' viewBox='0 0 1200 700'>
++<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='#1d4ed8'/><stop offset='100%' stop-color='#7c3aed'/></linearGradient></defs>
++<rect width='1200' height='700' fill='url(#g)'/>
++<circle cx='230' cy='140' r='90' fill='rgba(255,255,255,.14)'/>
++<circle cx='980' cy='560' r='140' fill='rgba(255,255,255,.12)'/>
++<text x='80' y='380' font-family='Arial' font-size='64' fill='white' font-weight='700'>Kenya Marketplace</text>
++<text x='80' y='440' font-family='Arial' font-size='32' fill='white'>Buy • Sell • Connect — 100% Free</text>
++</svg>
+ 
+EOF
+)
