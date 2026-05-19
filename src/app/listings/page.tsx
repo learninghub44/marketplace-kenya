@@ -58,13 +58,16 @@ export default function ListingsPage() {
               <Button variant="ghost">Login</Button>
             </Link>
             <Link href="/register">
-              <Button>Get Started</Button>
+              <Button>Sign up to Buy or Sell</Button>
             </Link>
           </nav>
         </div>
       </header>
 
       <div className="container mx-auto px-4 py-8">
+        <div className="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4 text-blue-900 dark:border-blue-900 dark:bg-blue-950 dark:text-blue-100">
+          Browsing is open to guests. To contact sellers, save favorites, buy, or post items for sale, please create an account or log in.
+        </div>
         <div className="mb-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
           <h2 className="text-xl font-semibold mb-4">Browse Listings</h2>
           <div className="flex gap-4">
