@@ -1,8 +1,10 @@
 name = "marketplace-kenya"
 compatibility_date = "2024-01-01"
+pages_build_output_dir = ".vercel/output/static"
 
 [vars]
-NEXT_PUBLIC_API_URL = "https://your-render-url.onrender.com"
+# TODO: Replace with your actual Render backend URL after deploying the backend
+NEXT_PUBLIC_API_URL = "https://kenya-marketplace-backend.onrender.com"
 
 [[redirects]]
 from = "/*"

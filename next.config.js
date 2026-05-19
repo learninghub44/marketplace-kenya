@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Required for Cloudflare Pages deployment
+  output: 'export',
+  trailingSlash: true,
   images: {
+    // Cloudflare Pages requires unoptimized images with static export
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',

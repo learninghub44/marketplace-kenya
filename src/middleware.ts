@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { verifyAccessToken } from '@/lib/auth-security'
+import { verifyJwtEdge } from '@/lib/edge-auth'
 
 const publicRoutes = ['/', '/login', '/register', '/pricing', '/listings']
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
   const res = NextResponse.next()
   res.headers.set('X-Frame-Options', 'DENY')
@@ -16,7 +16,8 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value
   if (!token) return NextResponse.redirect(new URL('/login', request.url))
 
-  const decoded: any = verifyAccessToken(token)
+  // Use edge-compatible JWT verification (no Node.js crypto/jsonwebtoken)
+  const decoded: any = await verifyJwtEdge(token)
   if (!decoded) return NextResponse.redirect(new URL('/login', request.url))
 
   if (path.startsWith('/buyer') && decoded.role !== 'buyer') return NextResponse.redirect(new URL(`/${decoded.role}`, request.url))

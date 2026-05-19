@@ -3,13 +3,12 @@ services:
     name: kenya-marketplace-backend
     env: node
     plan: free
+    rootDir: backend
     buildCommand: npm install
     startCommand: node server.js
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 3001
       - key: FRONTEND_URL
         sync: false
       - key: SUPABASE_URL
