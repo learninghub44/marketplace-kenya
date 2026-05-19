@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import type { User, Listing, Report, SupportTicket } from '@/types'
+import type { Listing, Report, SupportTicket } from '@/types'
 
 export default function AdminDashboard() {
   const router = useRouter()
@@ -98,11 +98,8 @@ export default function AdminDashboard() {
             <Button variant="ghost" onClick={() => router.push('/admin/listings')}>
               Listings
             </Button>
-            <Button variant="ghost" onClick={() => router.push('/admin/payments')}>
-              Payments
-            </Button>
-            <Button variant="ghost" onClick={() => router.push('/admin/security')}>
-              Security
+            <Button variant="ghost" onClick={fetchDashboardData}>
+              Refresh
             </Button>
             <Button variant="destructive" onClick={handleLogout}>
               Logout
@@ -145,9 +142,8 @@ export default function AdminDashboard() {
                   <CardTitle>Total Revenue</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold">
-                    KES {stats.totalRevenue.toLocaleString()}
-                  </div>
+                  <div className="text-3xl font-bold">Free</div>
+                  <div className="text-sm text-gray-500">Payment gateway removed</div>
                 </CardContent>
               </Card>
               <Card>

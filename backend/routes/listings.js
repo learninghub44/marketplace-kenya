@@ -70,28 +70,7 @@ router.post('/', authenticate, authorize('seller'), async (req, res) => {
       return res.status(404).json({ success: false, error: 'Seller not found' });
     }
 
-    // Check if subscription is active
-    if (seller.subscription_expires_at && new Date(seller.subscription_expires_at) < new Date()) {
-      return res.status(403).json({ success: false, error: 'Subscription expired' });
-    }
-
-    // Check listing limits based on package
-    const packageLimits = {
-      starter: 10,
-      business: 50,
-      premium: 999999,
-    };
-
-    const limit = packageLimits[seller.package_type] || 10;
-
-    const { count } = await supabaseAdmin
-      .from('listings')
-      .select('*', { count: 'exact', head: true })
-      .eq('seller_id', userId);
-
-    if (count >= limit) {
-      return res.status(403).json({ success: false, error: 'Listing limit reached' });
-    }
+    // Free marketplace mode: no subscription or package listing limits.
 
     // Create listing
     const { data: listing, error } = await supabaseAdmin

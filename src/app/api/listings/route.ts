@@ -77,38 +77,12 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check seller's package limits
+    // Resolve seller for tenant context
     const { data: seller } = await supabaseAdmin
       .from('sellers')
-      .select('*, package_type')
+      .select('*')
       .eq('id', decoded.userId)
       .single()
-
-    if (seller?.package_type === 'starter') {
-      const { count } = await supabaseAdmin
-        .from('listings')
-        .select('*', { count: 'exact', head: true })
-        .eq('seller_id', decoded.userId)
-
-      if (count && count >= 10) {
-        return NextResponse.json(
-          { success: false, error: 'Listing limit reached. Upgrade your package.' },
-          { status: 400 }
-        )
-      }
-    } else if (seller?.package_type === 'business') {
-      const { count } = await supabaseAdmin
-        .from('listings')
-        .select('*', { count: 'exact', head: true })
-        .eq('seller_id', decoded.userId)
-
-      if (count && count >= 50) {
-        return NextResponse.json(
-          { success: false, error: 'Listing limit reached. Upgrade to Premium.' },
-          { status: 400 }
-        )
-      }
-    }
 
     const { data: listing, error } = await supabaseAdmin
       .from('listings')
