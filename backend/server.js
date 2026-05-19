@@ -44,7 +44,11 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 // Health check
+// Health check — support both /health and /api/health (Render uses /api/health)
 app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
