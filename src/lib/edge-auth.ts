@@ -3,11 +3,15 @@
  * Uses Web Crypto API instead of Node.js jsonwebtoken/crypto.
  */
 
-function base64UrlDecode(str: string): Uint8Array {
+function base64UrlDecode(str: string): ArrayBuffer {
   const base64 = str.replace(/-/g, '+').replace(/_/g, '/')
   const padded = base64.padEnd(base64.length + (4 - (base64.length % 4)) % 4, '=')
   const binary = atob(padded)
-  return Uint8Array.from(binary, (c) => c.charCodeAt(0))
+  const bytes = new Uint8Array(binary.length)
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i)
+  }
+  return bytes.buffer as ArrayBuffer
 }
 
 export async function verifyJwtEdge(token: string): Promise<any | null> {
@@ -31,7 +35,8 @@ export async function verifyJwtEdge(token: string): Promise<any | null> {
     const valid = await crypto.subtle.verify('HMAC', key, signature, data)
     if (!valid) return null
 
-    const payload = JSON.parse(new TextDecoder().decode(base64UrlDecode(payloadB64)))
+    const payloadBytes = base64UrlDecode(payloadB64)
+    const payload = JSON.parse(new TextDecoder().decode(payloadBytes))
 
     // Check expiry
     if (payload.exp && Date.now() / 1000 > payload.exp) return null
