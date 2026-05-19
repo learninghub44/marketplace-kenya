@@ -46,7 +46,23 @@ export default function Home() {
               <p className="text-2xl font-bold text-blue-600">Secure</p>
               <p className="text-sm text-gray-600 dark:text-gray-300">Role-based account access</p>
             </div>
+            <Link href="/listings"><Button size="lg" variant="outline">Browse Products</Button></Link>
           </div>
+          <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
+            You can continue as a guest to browse listings. To buy or sell, create an account or log in.
+          </p>
+        </div>
+        <div className="relative">
+          <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-2xl rounded-3xl" />
+          <img src="/hero-market.svg" alt="Kenya marketplace hero" className="relative w-full rounded-2xl shadow-2xl border bg-white/60 dark:bg-slate-900/50" />
+        </div>
+        <div className="relative">
+          <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-2xl rounded-3xl" />
+          <img src="/hero-market.svg" alt="Kenya marketplace hero" className="relative w-full rounded-2xl shadow-2xl border bg-white/60 dark:bg-slate-900/50" />
+        </div>
+        <div className="relative">
+          <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-2xl rounded-3xl" />
+          <img src="/hero-market.svg" alt="Kenya marketplace hero" className="relative w-full rounded-2xl shadow-2xl border bg-white/60 dark:bg-slate-900/50" />
         </div>
         <div className="relative">
           <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-2xl rounded-3xl" />
