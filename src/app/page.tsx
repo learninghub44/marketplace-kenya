@@ -22,8 +22,12 @@ export default function Home() {
           </p>
           <div className="flex gap-4">
             <Link href="/register"><Button size="lg">Create Free Account</Button></Link>
+            <Link href="/login"><Button size="lg" variant="secondary">Login to Buy or Sell</Button></Link>
             <Link href="/listings"><Button size="lg" variant="outline">Browse Products</Button></Link>
           </div>
+          <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
+            You can continue as a guest to browse listings. To buy or sell, create an account or log in.
+          </p>
         </div>
         <img src="/hero-market.svg" alt="Kenya marketplace hero" className="w-full rounded-2xl shadow-xl" />
       </section>
