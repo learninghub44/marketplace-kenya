@@ -1,46 +1,29 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { verifyToken } from '@/lib/auth'
+import { verifyAccessToken } from '@/lib/auth-security'
+
+const publicRoutes = ['/', '/login', '/register', '/pricing', '/listings']
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get('token')?.value
   const path = request.nextUrl.pathname
+  const res = NextResponse.next()
+  res.headers.set('X-Frame-Options', 'DENY')
+  res.headers.set('X-Content-Type-Options', 'nosniff')
+  res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
 
-  // Public routes
-  const publicRoutes = ['/', '/login', '/register', '/pricing', '/listings']
-  if (publicRoutes.includes(path)) {
-    return NextResponse.next()
-  }
+  if (publicRoutes.includes(path) || path.startsWith('/api/auth')) return res
 
-  // Protected routes
-  if (!token) {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
+  const token = request.cookies.get('token')?.value
+  if (!token) return NextResponse.redirect(new URL('/login', request.url))
 
-  // Verify token
-  const decoded = verifyToken(token)
-  if (!decoded) {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
+  const decoded: any = verifyAccessToken(token)
+  if (!decoded) return NextResponse.redirect(new URL('/login', request.url))
 
-  // Role-based routing
-  if (path.startsWith('/buyer') && decoded.role !== 'buyer') {
-    return NextResponse.redirect(new URL(`/${decoded.role}`, request.url))
-  }
+  if (path.startsWith('/buyer') && decoded.role !== 'buyer') return NextResponse.redirect(new URL(`/${decoded.role}`, request.url))
+  if (path.startsWith('/seller') && decoded.role !== 'seller') return NextResponse.redirect(new URL(`/${decoded.role}`, request.url))
+  if (path.startsWith('/admin') && decoded.role !== 'admin') return NextResponse.redirect(new URL(`/${decoded.role}`, request.url))
 
-  if (path.startsWith('/seller') && decoded.role !== 'seller') {
-    return NextResponse.redirect(new URL(`/${decoded.role}`, request.url))
-  }
-
-  if (path.startsWith('/admin') && decoded.role !== 'admin') {
-    return NextResponse.redirect(new URL(`/${decoded.role}`, request.url))
-  }
-
-  return NextResponse.next()
+  return res
 }
 
-export const config = {
-  matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
-  ],
-}
+export const config = { matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'] }
