@@ -26,7 +26,7 @@ export default function SellerProfilePage() {
 
   const fetchSellerProfile = async () => {
     try {
-      const response = await fetch('/api/seller/profile')
+      const response = await fetch(`${API_BASE}/api/seller/profile`)
       const data = await response.json()
       if (data.success) {
         setSeller(data.seller)
@@ -47,7 +47,7 @@ export default function SellerProfilePage() {
     setError('')
 
     try {
-      const response = await fetch('/api/seller/profile', {
+      const response = await fetch(`${API_BASE}/api/seller/profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

@@ -17,7 +17,7 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); if (formData.password !== formData.confirmPassword) return setError('Passwords do not match')
     setLoading(true); setError('')
-    const r = await fetch('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(formData)})
+    const r = await fetch(`${API_BASE}/api/auth/register`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(formData)})
     const d = await r.json(); if (!d.success) setError(d.error || 'Registration failed'); else router.push('/login?verify=email'); setLoading(false)
   }
 

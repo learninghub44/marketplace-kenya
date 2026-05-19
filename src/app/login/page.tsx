@@ -16,7 +16,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); setLoading(true); setError('')
-    const response = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) })
+    const response = await fetch(`${API_BASE}/api/auth/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) })
     const data = await response.json()
     if (!data.success) setError(data.error || 'Login failed')
     else router.push(data.user.role === 'buyer' ? '/buyer' : data.user.role === 'seller' ? '/seller' : '/admin')

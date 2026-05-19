@@ -43,7 +43,7 @@ export default function CreateListingPage() {
 
     setAiGenerating(true)
     try {
-      const response = await fetch('/api/ai/generate-listing', {
+      const response = await fetch(`${API_BASE}/api/ai/generate-listing`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -72,7 +72,7 @@ export default function CreateListingPage() {
     setError('')
 
     try {
-      const response = await fetch('/api/listings', {
+      const response = await fetch(`${API_BASE}/api/listings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -22,7 +22,7 @@ export default function SellerDashboard() {
 
   const fetchSellerData = async () => {
     try {
-      const response = await fetch('/api/seller/profile')
+      const response = await fetch(`${API_BASE}/api/seller/profile`)
       const data = await response.json()
       if (data.success) {
         setSeller(data.seller)
@@ -34,7 +34,7 @@ export default function SellerDashboard() {
 
   const fetchListings = async () => {
     try {
-      const response = await fetch('/api/listings/my')
+      const response = await fetch(`${API_BASE}/api/listings/my`)
       const data = await response.json()
       if (data.success) {
         setListings(data.listings)
@@ -47,7 +47,7 @@ export default function SellerDashboard() {
   }
 
   const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' })
+    await fetch(`${API_BASE}/api/auth/logout`, { method: 'POST' })
     router.push('/login')
   }
 
@@ -55,7 +55,7 @@ export default function SellerDashboard() {
     if (!confirm('Are you sure you want to delete this listing?')) return
 
     try {
-      const response = await fetch(`/api/listings/${listingId}`, {
+      const response = await fetch(`${API_BASE}/api/listings/${listingId}`, {
         method: 'DELETE',
       })
       if (response.ok) {

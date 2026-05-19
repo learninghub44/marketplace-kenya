@@ -32,10 +32,10 @@ export default function AdminDashboard() {
   const fetchDashboardData = async () => {
     try {
       const [statsRes, listingsRes, reportsRes, ticketsRes] = await Promise.all([
-        fetch('/api/admin/stats'),
-        fetch('/api/admin/listings?status=pending'),
-        fetch('/api/admin/reports?status=pending'),
-        fetch('/api/admin/tickets?status=open'),
+        fetch(`${API_BASE}/api/admin/stats`),
+        fetch(`${API_BASE}/api/admin/listings?status=pending`),
+        fetch(`${API_BASE}/api/admin/reports?status=pending`),
+        fetch(`${API_BASE}/api/admin/tickets?status=open`),
       ])
 
       const statsData = await statsRes.json()
@@ -55,13 +55,13 @@ export default function AdminDashboard() {
   }
 
   const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' })
+    await fetch(`${API_BASE}/api/auth/logout`, { method: 'POST' })
     router.push('/login')
   }
 
   const handleApproveListing = async (listingId: string) => {
     try {
-      const response = await fetch(`/api/admin/listings/${listingId}/approve`, {
+      const response = await fetch(`${API_BASE}/api/admin/listings/${listingId}/approve`, {
         method: 'POST',
       })
       if (response.ok) {
@@ -74,7 +74,7 @@ export default function AdminDashboard() {
 
   const handleRejectListing = async (listingId: string) => {
     try {
-      const response = await fetch(`/api/admin/listings/${listingId}/reject`, {
+      const response = await fetch(`${API_BASE}/api/admin/listings/${listingId}/reject`, {
         method: 'POST',
       })
       if (response.ok) {

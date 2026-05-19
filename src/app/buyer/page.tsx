@@ -22,7 +22,7 @@ export default function BuyerDashboard() {
 
   const fetchListings = async () => {
     try {
-      const response = await fetch('/api/listings?status=active')
+      const response = await fetch(`${API_BASE}/api/listings?status=active`)
       const data = await response.json()
       if (data.success) {
         setListings(data.listings)
@@ -36,7 +36,7 @@ export default function BuyerDashboard() {
 
   const handleSearch = async () => {
     try {
-      const response = await fetch(`/api/listings?search=${searchQuery}&category=${selectedCategory}`)
+      const response = await fetch(`${API_BASE}/api/listings?search=${searchQuery}&category=${selectedCategory}`)
       const data = await response.json()
       if (data.success) {
         setListings(data.listings)
@@ -48,7 +48,7 @@ export default function BuyerDashboard() {
 
   const handleAddToFavorites = async (listingId: string) => {
     try {
-      const response = await fetch('/api/favorites', {
+      const response = await fetch(`${API_BASE}/api/favorites`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ listing_id: listingId }),
@@ -62,7 +62,7 @@ export default function BuyerDashboard() {
   }
 
   const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' })
+    await fetch(`${API_BASE}/api/auth/logout`, { method: 'POST' })
     router.push('/login')
   }
 

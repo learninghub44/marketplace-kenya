@@ -22,7 +22,7 @@ export default function ListingsPage() {
 
   const fetchListings = async () => {
     try {
-      const response = await fetch('/api/listings?status=active')
+      const response = await fetch(`${API_BASE}/api/listings?status=active`)
       const data = await response.json()
       if (data.success) {
         setListings(data.listings)
@@ -36,7 +36,7 @@ export default function ListingsPage() {
 
   const handleSearch = async () => {
     try {
-      const response = await fetch(`/api/listings?search=${searchQuery}&category=${selectedCategory}`)
+      const response = await fetch(`${API_BASE}/api/listings?search=${searchQuery}&category=${selectedCategory}`)
       const data = await response.json()
       if (data.success) {
         setListings(data.listings)
