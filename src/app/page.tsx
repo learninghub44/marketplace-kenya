@@ -28,25 +28,11 @@ export default function Home() {
           <div className="flex flex-wrap gap-4">
             <Link href="/register"><Button size="lg">Create Free Account</Button></Link>
             <Link href="/login"><Button size="lg" variant="secondary">Login to Buy or Sell</Button></Link>
-            <Link href="/listings"><Button size="lg" variant="outline">Browse as Guest <ArrowRight className="ml-2 h-4 w-4" /></Button></Link>
+            <Link href="/listings"><Button size="lg" variant="outline">Browse Products</Button></Link>
           </div>
-          <p className="text-sm text-gray-600 dark:text-gray-300">
+          <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
             You can continue as a guest to browse listings. To buy or sell, create an account or log in.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-            <div className="rounded-xl border bg-white/80 dark:bg-slate-900/60 p-4">
-              <p className="text-2xl font-bold text-blue-600">100%</p>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Free listing experience</p>
-            </div>
-            <div className="rounded-xl border bg-white/80 dark:bg-slate-900/60 p-4">
-              <p className="text-2xl font-bold text-blue-600">Fast</p>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Post and discover in minutes</p>
-            </div>
-            <div className="rounded-xl border bg-white/80 dark:bg-slate-900/60 p-4">
-              <p className="text-2xl font-bold text-blue-600">Secure</p>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Role-based account access</p>
-            </div>
-          </div>
         </div>
         <div className="relative">
           <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-2xl rounded-3xl" />
