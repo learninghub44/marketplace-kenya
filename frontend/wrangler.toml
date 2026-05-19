@@ -1,0 +1,10 @@
+name = "kenya-marketplace-frontend"
+compatibility_date = "2024-01-01"
+
+[vars]
+NEXT_PUBLIC_API_URL = "https://your-render-url.onrender.com"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
