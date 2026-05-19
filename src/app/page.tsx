@@ -60,6 +60,10 @@ export default function Home() {
           <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-2xl rounded-3xl" />
           <img src="/hero-market.svg" alt="Kenya marketplace hero" className="relative w-full rounded-2xl shadow-2xl border bg-white/60 dark:bg-slate-900/50" />
         </div>
+        <div className="relative">
+          <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-2xl rounded-3xl" />
+          <img src="/hero-market.svg" alt="Kenya marketplace hero" className="relative w-full rounded-2xl shadow-2xl border bg-white/60 dark:bg-slate-900/50" />
+        </div>
       </section>
 
       <section className="container mx-auto px-4 py-8">
