@@ -5,32 +5,16 @@ export const ROLES = {
 } as const
 
 export const PACKAGE_TYPES = {
-  STARTER: 'starter',
-  BUSINESS: 'business',
-  PREMIUM: 'premium',
+  FREE: 'free',
 } as const
 
 export const PACKAGES = {
-  [PACKAGE_TYPES.STARTER]: {
-    name: 'Starter',
-    price: 100,
-    listings: 10,
-    duration: 30,
-    features: ['10 listings', '30 days validity', 'Basic analytics'],
-  },
-  [PACKAGE_TYPES.BUSINESS]: {
-    name: 'Business',
-    price: 300,
-    listings: 50,
-    duration: 30,
-    features: ['50 listings', 'Featured products', 'Advanced analytics'],
-  },
-  [PACKAGE_TYPES.PREMIUM]: {
-    name: 'Premium',
-    price: 1000,
-    listings: -1, // Unlimited
-    duration: 30,
-    features: ['Unlimited listings', 'AI tools', 'Priority ranking'],
+  [PACKAGE_TYPES.FREE]: {
+    name: 'Free',
+    price: 0,
+    listings: -1,
+    duration: -1,
+    features: ['Unlimited listings', 'AI tools', 'Admin moderation', 'Messaging'],
   },
 }
 
@@ -52,7 +36,6 @@ export const PAYMENT_STATUS = {
 export const NOTIFICATION_TYPES = {
   MESSAGE: 'message',
   ORDER: 'order',
-  PAYMENT: 'payment',
   LISTING: 'listing',
   SYSTEM: 'system',
   SECURITY: 'security',

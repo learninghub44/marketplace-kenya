@@ -28,7 +28,6 @@ export async function GET(request: NextRequest) {
       listingsResult,
       pendingListingsResult,
       activeListingsResult,
-      paymentsResult,
       reportsResult,
       ticketsResult,
     ] = await Promise.all([
@@ -38,17 +37,9 @@ export async function GET(request: NextRequest) {
       supabaseAdmin.from('listings').select('*', { count: 'exact', head: true }),
       supabaseAdmin.from('listings').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
       supabaseAdmin.from('listings').select('*', { count: 'exact', head: true }).eq('status', 'active'),
-      supabaseAdmin.from('payments').select('amount', { count: 'exact' }).eq('status', 'completed'),
       supabaseAdmin.from('reports').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
       supabaseAdmin.from('support_tickets').select('*', { count: 'exact', head: true }).eq('status', 'open'),
     ])
-
-    // Calculate total revenue
-    let totalRevenue = 0
-    if (paymentsResult.data) {
-      totalRevenue = paymentsResult.data.reduce((sum: number, p: any) => sum + Number(p.amount), 0)
-    }
-
     const stats = {
       totalUsers: usersResult.count || 0,
       totalSellers: sellersResult.count || 0,
@@ -56,7 +47,7 @@ export async function GET(request: NextRequest) {
       totalListings: listingsResult.count || 0,
       pendingListings: pendingListingsResult.count || 0,
       activeListings: activeListingsResult.count || 0,
-      totalRevenue,
+      totalRevenue: 0,
       reports: reportsResult.count || 0,
       openTickets: ticketsResult.count || 0,
     }

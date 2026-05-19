@@ -127,15 +127,10 @@ export default function SellerProfilePage() {
               </div>
 
               <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
-                <h3 className="font-semibold mb-2">Subscription Status</h3>
+                <h3 className="font-semibold mb-2">Account Status</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Package: <span className="font-semibold capitalize">{seller?.package_type || 'None'}</span>
+                  Plan: <span className="font-semibold">Free</span>
                 </p>
-                {seller?.subscription_expires_at && (
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    Expires: {new Date(seller.subscription_expires_at).toLocaleDateString()}
-                  </p>
-                )}
                 {seller?.verified && (
                   <p className="text-sm text-green-600 mt-2">✓ Verified Seller</p>
                 )}

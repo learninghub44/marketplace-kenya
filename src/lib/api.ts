@@ -121,19 +121,6 @@ export const api = {
     return response.json();
   },
 
-  // PayHero
-  initiateSTKPush: async (phone: string, amount: number, packageType: string, token: string) => {
-    const response = await fetch(`${API_BASE_URL}/api/payhero/stk`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ phone, amount, package_type: packageType }),
-    });
-    return response.json();
-  },
-
   // AI
   generateListing: async (productName: string, category: string, provider: string = 'openai', token: string) => {
     const response = await fetch(`${API_BASE_URL}/api/ai/generate-listing`, {

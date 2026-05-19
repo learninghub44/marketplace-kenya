@@ -125,34 +125,13 @@ export default function SellerDashboard() {
               <CardTitle>Package</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-xl font-bold capitalize">
-                {seller?.package_type || 'None'}
-              </div>
-              {seller?.subscription_expires_at && (
-                <div className="text-sm text-gray-500">
-                  Expires: {new Date(seller.subscription_expires_at).toLocaleDateString()}
-                </div>
-              )}
+              <div className="text-xl font-bold">Free</div>
+              <div className="text-sm text-gray-500">Unlimited usage enabled</div>
             </CardContent>
           </Card>
         </div>
 
         {/* Package Upgrade Section */}
-        {seller && !seller.package_type && (
-          <Card className="mb-8 border-yellow-500">
-            <CardHeader>
-              <CardTitle>Upgrade Your Package</CardTitle>
-              <CardDescription>
-                Choose a package to start selling on Kenya Marketplace
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Link href="/pricing">
-                <Button>View Packages</Button>
-              </Link>
-            </CardContent>
-          </Card>
-        )}
 
         {/* Listings Section */}
         <Tabs defaultValue="listings">
@@ -213,24 +192,12 @@ export default function SellerDashboard() {
               <CardHeader>
                 <CardTitle>Create New Listing</CardTitle>
                 <CardDescription>
-                  {seller?.package_type === 'starter' && listings.length >= 10 && (
-                    <span className="text-red-500">
-                      You've reached your listing limit. Upgrade your package to add more.
-                    </span>
-                  )}
-                  {seller?.package_type === 'business' && listings.length >= 50 && (
-                    <span className="text-red-500">
-                      You've reached your listing limit. Upgrade to Premium for unlimited listings.
-                    </span>
-                  )}
+                  <span className="text-green-600">No listing limits. Create and publish freely.</span>
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Link href="/seller/listings/create">
-                  <Button disabled={
-                    (seller?.package_type === 'starter' && listings.length >= 10) ||
-                    (seller?.package_type === 'business' && listings.length >= 50)
-                  }>
+                  <Button>
                     Create Listing
                   </Button>
                 </Link>
