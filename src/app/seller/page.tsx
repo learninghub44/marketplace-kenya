@@ -9,6 +9,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { formatCurrency } from '@/lib/utils'
 import type { Listing, Seller } from '@/types'
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+
+
 export default function SellerDashboard() {
   const router = useRouter()
   const [listings, setListings] = useState<Listing[]>([])

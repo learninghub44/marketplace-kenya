@@ -9,6 +9,9 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+
+
 export default function CreateListingPage() {
   const router = useRouter()
   const [formData, setFormData] = useState({

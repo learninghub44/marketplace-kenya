@@ -9,6 +9,9 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import type { Seller } from '@/types'
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+
+
 export default function SellerProfilePage() {
   const router = useRouter()
   const [seller, setSeller] = useState<Seller | null>(null)

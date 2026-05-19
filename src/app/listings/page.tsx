@@ -9,6 +9,9 @@ import { Input } from '@/components/ui/input'
 import { formatCurrency } from '@/lib/utils'
 import type { Listing } from '@/types'
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+
+
 export default function ListingsPage() {
   const router = useRouter()
   const [listings, setListings] = useState<Listing[]>([])

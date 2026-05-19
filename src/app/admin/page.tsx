@@ -7,6 +7,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import type { Listing, Report, SupportTicket } from '@/types'
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+
+
 export default function AdminDashboard() {
   const router = useRouter()
   const [stats, setStats] = useState({
