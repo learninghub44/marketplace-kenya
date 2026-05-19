@@ -4,9 +4,10 @@ import { verifyToken } from '@/lib/auth'
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const token = request.cookies.get('token')?.value
     if (!token) {
       return NextResponse.json(
@@ -26,7 +27,7 @@ export async function DELETE(
     const { error } = await supabaseAdmin
       .from('favorites')
       .delete()
-      .eq('id', params.id)
+      .eq('id', id)
       .eq('buyer_id', decoded.userId)
 
     if (error) {

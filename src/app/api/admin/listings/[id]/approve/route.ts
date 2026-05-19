@@ -4,9 +4,10 @@ import { verifyToken } from '@/lib/auth'
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const token = request.cookies.get('token')?.value
     if (!token) {
       return NextResponse.json(
@@ -26,7 +27,7 @@ export async function POST(
     const { error } = await supabaseAdmin
       .from('listings')
       .update({ status: 'active' })
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (error) {
       return NextResponse.json(
@@ -40,7 +41,7 @@ export async function POST(
       user_id: decoded.userId,
       action: 'approve_listing',
       entity: 'listings',
-      entity_id: params.id,
+      entity_id: id,
       tenant_id: decoded.userId, // This should be the admin's tenant_id
     })
 
