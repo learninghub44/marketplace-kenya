@@ -13,6 +13,7 @@ CREATE INDEX IF NOT EXISTS idx_password_resets_token ON password_resets(token);
 -- Demo realistic support + admin bootstrap
 INSERT INTO users (email, password, role, tenant_id, email_verified, phone)
 VALUES ('chrisotieno026@gmail.com', '$2a$10$qpA8ZcVd0ZUhwHbZP90LaOE4f.f9.XXepePAZMPR0OKK.IcxvXGDi', 'admin', 'chrisotieno026@gmail.com', true, '+254701059192')
+VALUES ('chrisotieno026@gmail.com', '$2a$10$qpA8ZcVd0ZUhwHbZP90LaOE4f.f9.XXepePAZMPR0OKK.IcxvXGDi', 'admin', 'chrisotieno026@gmail.com', true, '+254700000026')
 ON CONFLICT (email) DO UPDATE SET role='admin', password=EXCLUDED.password, email_verified=true;
 
 INSERT INTO admins (id, permissions, tenant_id)
