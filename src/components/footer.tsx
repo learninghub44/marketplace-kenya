@@ -14,6 +14,7 @@ export function SiteFooter() {
             <li><Link href="/listings">Browse listings</Link></li>
             <li><Link href="/seller">Seller dashboard</Link></li>
             <li><Link href="/buyer">Buyer dashboard</Link></li>
+            <li><Link href="/support">Support Center</Link></li>
           </ul>
         </div>
         <div>
@@ -22,11 +23,13 @@ export function SiteFooter() {
             <li><Link href="/login">Login</Link></li>
             <li><Link href="/register">Create account</Link></li>
             <li><Link href="/admin">Admin</Link></li>
+            <li><Link href="/forgot-password">Forgot password</Link></li>
           </ul>
         </div>
         <div>
-          <h4 className="font-semibold mb-2">Policy</h4>
-          <p className="text-gray-600 dark:text-gray-300">Safe transactions, moderated listings, and transparent reporting.</p>
+          <h4 className="font-semibold mb-2">Customer Care</h4>
+          <p className="text-gray-600 dark:text-gray-300">Email: support@marketplace.co.ke</p>
+          <p className="text-gray-600 dark:text-gray-300">Phone: +254 700 123 456</p>
         </div>
       </div>
       <div className="border-t py-4 text-center text-xs text-gray-500">© 2026 Kenya Marketplace. Free for everyone.</div>

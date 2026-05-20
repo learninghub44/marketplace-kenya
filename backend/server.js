@@ -15,6 +15,7 @@ const adminRoutes = require('./routes/admin');
 const sellerRoutes = require('./routes/seller');
 const notificationRoutes = require('./routes/notifications');
 const storageRoutes = require('./routes/storage');
+const supportRoutes = require('./routes/support');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -62,6 +63,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/seller', sellerRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/storage', storageRoutes);
+app.use('/api/support', supportRoutes);
 
 // 404 handler
 app.use((req, res) => {
