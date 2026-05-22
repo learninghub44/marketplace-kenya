@@ -30,7 +30,7 @@ const FLASH_PRODUCTS = [
 const SERVICES = [
   { icon: Truck,       title: 'Islandwide Delivery',  desc: 'Delivered to all 47 counties' },
   { icon: RotateCcw,   title: 'Easy Returns',         desc: 'Return within 7 days — hassle free' },
-  { icon: Shield,      title: 'Secure Payments',      desc: 'M-Pesa & card payments protected' },
+  { icon: Shield,      title: 'Safe Transactions',     desc: 'Buyer & seller agree on payment' },
   { icon: Headphones,  title: '24/7 Support',         desc: 'WhatsApp & email support' },
 ]
 

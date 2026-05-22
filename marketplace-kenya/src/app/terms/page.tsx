@@ -631,7 +631,7 @@ export default function TermsPage() {
         doc.setFontSize(7)
         doc.setFont('helvetica', 'normal')
         doc.setTextColor(120, 120, 120)
-        doc.text('Sokoni Kenya · sokonikenya@gmail.com · +254 701 059 192 · www.sokonikenya.com', margin, pageH - 5)
+        doc.text('Sokoni Kenya · Support Centre · WhatsApp: 0701 059 192', margin, pageH - 5)
         doc.text(`Page ${p} of ${totalPages}`, pageW - margin, pageH - 5, { align: 'right' })
       }
 
@@ -815,7 +815,7 @@ export default function TermsPage() {
               </p>
               <div className="grid sm:grid-cols-3 gap-3">
                 {[
-                  { icon: Mail,         label: 'Email',     val: 'sokonikenya@gmail.com',     href: 'mailto:sokonikenya@gmail.com' },
+                  { icon: Phone,         label: 'WhatsApp',  val: '0701 059 192',              href: 'https://wa.me/254701059192' },
                   { icon: Phone,        label: 'Phone',     val: '+254 701 059 192',          href: 'tel:+254701059192' },
                   { icon: FileText,     label: 'Support',   val: 'Help Center',               href: '/support' },
                 ].map(({ icon: I, label, val, href }) => (

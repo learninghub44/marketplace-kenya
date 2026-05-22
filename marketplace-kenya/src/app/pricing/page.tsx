@@ -15,7 +15,7 @@ export default function PricingPage() {
         'Unlimited listings',
         'Browse all categories',
         'Message sellers',
-        'M-Pesa payments',
+        'Negotiate payment directly with seller',
         'Basic seller profile',
         'Email support',
       ],

@@ -18,7 +18,7 @@ const verifyToken = (token) => {
   try { return jwt.verify(token, JWT_SECRET); } catch { return null; }
 };
 
-const registerUser = async (email, password, role, phone = null) => {
+const registerUser = async (email, password, role, phone = null, name = null) => {
   // Check existing
   const { data: existing } = await supabaseAdmin
     .from('users').select('id').eq('email', email).maybeSingle();
@@ -30,7 +30,7 @@ const registerUser = async (email, password, role, phone = null) => {
   // Passing our own UUID triggers users_tenant_id_fkey FK check against tenants table
   const { data: user, error } = await supabaseAdmin
     .from('users')
-    .insert({ email, password_hash, role, phone: phone || null })
+    .insert({ email, password_hash, role, phone: phone || null, name: name || null })
     .select('id,email,role,phone,tenant_id,created_at')
     .single();
 
