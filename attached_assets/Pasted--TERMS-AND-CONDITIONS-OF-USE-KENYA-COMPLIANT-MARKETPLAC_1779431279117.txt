@@ -1,0 +1,337 @@
+# TERMS AND CONDITIONS OF USE
+
+## (KENYA COMPLIANT – MARKETPLACE PLATFORM AGREEMENT)
+
+## 1. LEGAL AGREEMENT
+
+This Terms and Conditions Agreement (“Agreement”) is a legally binding contract between:
+
+* The operator of this digital marketplace platform (“Platform”, “we”, “us”, “our”)
+* Any individual or entity accessing or using the platform (“User”, “Buyer”, “Seller”)
+
+By accessing, registering, or using this platform, you expressly agree to be bound by this Agreement under the laws of the Republic of Kenya, including but not limited to:
+
+* The **Law of Contract Act (Cap 23)**
+* The **Consumer Protection Act (2012)**
+* The **Data Protection Act (2019)** and related regulations
+
+If you do not agree, you must discontinue use immediately.
+
+---
+
+## 2. PLATFORM ROLE AND LEGAL STATUS
+
+2.1 The Platform operates strictly as an **intermediary digital marketplace** that facilitates interaction between independent Buyers and Sellers.
+
+2.2 The Platform does NOT:
+
+* Own, manufacture, or sell any listed goods
+* Act as an agent, distributor, or reseller of products
+* Guarantee product authenticity, quality, legality, or fitness for purpose
+* Assume responsibility for contractual obligations between Buyers and Sellers
+
+2.3 All transactions are strictly and independently executed between Buyers and Sellers.
+
+---
+
+## 3. THIRD-PARTY SERVICES AND INTEGRATIONS
+
+3.1 The Platform may integrate or rely on third-party service providers including:
+
+* Payment processors (e.g., mobile money, card gateways)
+* Logistics and courier services
+* Cloud hosting providers
+* Analytics and AI service providers
+* Communication and notification services
+
+3.2 Users acknowledge that:
+
+* Third-party services operate under their own terms and privacy policies
+* The Platform does not control or guarantee third-party performance
+* The Platform shall not be held liable for any loss, delay, or damage arising from third-party systems
+
+---
+
+## 4. PAYMENTS AND FINANCIAL LIABILITY DISCLAIMER
+
+4.1 The Platform does NOT directly hold, manage, or guarantee user funds unless explicitly stated under a separate escrow agreement.
+
+4.2 Payments are processed via independent third-party payment service providers or directly between Users.
+
+4.3 Accordingly, the Platform shall NOT be held liable for:
+
+* Loss of funds arising from failed or reversed transactions
+* Fraudulent transactions between Buyers and Sellers
+* Disputes relating to payment delivery or settlement
+* Delays caused by payment processors or financial institutions
+
+4.4 Users acknowledge that all financial transactions are undertaken at their own risk.
+
+4.5 The Platform may, at its sole discretion, provide dispute mediation support but shall not be obligated to enforce payment recovery or refunds.
+
+---
+
+## 5. USER OBLIGATIONS
+
+### 5.1 Sellers
+
+Sellers warrant that:
+
+* All listed products are lawful and accurately described
+* They have legal right to sell the listed goods
+* Orders will be fulfilled in accordance with agreed terms
+
+### 5.2 Buyers
+
+Buyers warrant that:
+
+* All purchase decisions are made after independent review
+* Payment details provided are valid and authorized
+* They will not engage in fraudulent dispute claims
+
+---
+
+## 6. DISPUTE RESOLUTION
+
+6.1 The Platform may provide voluntary dispute resolution services.
+
+6.2 The Platform acts strictly as a neutral facilitator and NOT as:
+
+* A court of law
+* An arbitration body under statutory authority
+* A guarantor of transaction outcomes
+
+6.3 Final resolution of disputes may require:
+
+* Mutual agreement between parties
+* Evidence submission
+* External legal proceedings under Kenyan law
+
+6.4 The Platform reserves the right to suspend accounts involved in abuse, fraud, or repeated disputes.
+
+---
+
+## 7. LIMITATION OF LIABILITY
+
+To the fullest extent permitted under Kenyan law:
+
+7.1 The Platform shall not be liable for:
+
+* Direct or indirect financial loss
+* Loss of profits, data, or goodwill
+* Product defects or misrepresentation by Sellers
+* Delivery failures or logistics issues
+* Actions or omissions of Users or third parties
+
+7.2 Use of the Platform is entirely at the User’s own risk.
+
+---
+
+## 8. ACCOUNT SECURITY AND RESPONSIBILITY
+
+Users are solely responsible for:
+
+* Maintaining confidentiality of login credentials
+* All activity conducted under their account
+* Prompt notification of unauthorized access
+
+The Platform shall not be liable for losses arising from compromised accounts.
+
+---
+
+## 9. PROHIBITED ACTIVITIES
+
+Users shall not:
+
+* Engage in fraudulent, deceptive, or illegal activity
+* Upload or sell prohibited goods under Kenyan law
+* Attempt to bypass security systems
+* Scrape, reverse engineer, or disrupt the Platform
+* Manipulate reviews, ratings, or listings
+
+Violation may result in immediate suspension or termination.
+
+---
+
+## 10. DATA PROTECTION AND PRIVACY COMPLIANCE
+
+10.1 The Platform complies with the **Kenya Data Protection Act (2019)**.
+
+10.2 Personal data collected may include:
+
+* Identity and contact information
+* Transaction metadata
+* Device and usage data
+* Location data (where permitted)
+
+10.3 Data may be shared with:
+
+* Payment providers
+* Logistics companies
+* Cloud service providers
+* Analytics and AI service providers
+
+10.4 Such third parties are independently responsible for their compliance obligations.
+
+---
+
+## 11. DATA SECURITY
+
+The Platform implements reasonable technical and organizational measures to protect data, including:
+
+* Encryption in transit where applicable
+* Access control systems
+* Secure authentication mechanisms
+* Monitoring for unauthorized access
+
+However, absolute security cannot be guaranteed.
+
+---
+
+## 12. INTELLECTUAL PROPERTY
+
+All Platform software, branding, and system designs remain the intellectual property of the Platform operator unless otherwise stated.
+
+Users retain ownership of their uploaded content but grant the Platform a non-exclusive license to display and distribute such content for operational purposes.
+
+---
+
+## 13. TERMINATION
+
+The Platform reserves the right to suspend or terminate accounts:
+
+* For breach of this Agreement
+* For fraudulent or illegal activity
+* To comply with legal obligations
+* To protect platform integrity
+
+---
+
+## 14. AMENDMENTS
+
+The Platform may update this Agreement periodically. Continued use after updates constitutes acceptance of revised terms.
+
+---
+
+## 15. GOVERNING LAW
+
+This Agreement shall be governed by and interpreted in accordance with the laws of the Republic of Kenya.
+
+Any disputes shall be subject to the jurisdiction of Kenyan courts.
+
+---
+
+# PRIVACY POLICY (KENYA DATA PROTECTION COMPLIANT)
+
+## 1. DATA CONTROLLER
+
+The Platform acts as a Data Controller under the Kenya Data Protection Act (2019).
+
+---
+
+## 2. PERSONAL DATA COLLECTED
+
+We may collect:
+
+* Full name
+* Email address
+* Phone number
+* Physical address (if provided)
+* Transaction and order history
+* Device identifiers and IP address
+* Cookies and usage analytics
+
+---
+
+## 3. PURPOSE OF DATA PROCESSING
+
+Data is collected for:
+
+* Providing marketplace functionality
+* Enabling buyer-seller communication
+* Fraud prevention and security
+* Analytics and service improvement
+* Customer support
+* Legal compliance
+
+---
+
+## 4. SHARING OF DATA WITH THIRD PARTIES
+
+We may share data with:
+
+* Payment processors
+* Logistics providers
+* Cloud infrastructure providers
+* Analytics and AI service providers
+
+Such sharing is strictly limited to operational necessity.
+
+The Platform is NOT liable for independent misuse by third parties.
+
+---
+
+## 5. DATA SUBJECT RIGHTS
+
+Under Kenyan law, users may:
+
+* Request access to personal data
+* Request correction of inaccurate data
+* Request deletion of personal data (subject to legal obligations)
+* Object to certain processing activities
+
+Requests may be submitted via official support channels.
+
+---
+
+## 6. DATA RETENTION
+
+Personal data is retained:
+
+* For as long as necessary for operational purposes
+* As required under applicable laws
+* Until account deletion, subject to legal retention obligations
+
+---
+
+## 7. COOKIES
+
+Cookies are used for:
+
+* Authentication
+* Session management
+* Analytics
+* Personalization
+
+Users may disable cookies, though functionality may be affected.
+
+---
+
+## 8. DATA SECURITY MEASURES
+
+We implement reasonable safeguards including:
+
+* Secure authentication systems
+* Encrypted communication channels
+* Access restrictions
+* Monitoring systems
+
+Despite this, no system is fully secure.
+
+---
+
+## 9. INTERNATIONAL DATA TRANSFERS
+
+User data may be processed or stored outside Kenya where third-party infrastructure is used. Such transfers are done with reasonable safeguards.
+
+---
+
+## 10. POLICY UPDATES
+
+This Privacy Policy may be updated from time to time. Continued use of the Platform constitutes acceptance of updates.
+
+---
+
+## 11. CONTACT
+
+All legal, privacy, or data protection inquiries should be directed through official platform support channels.
