@@ -90,10 +90,11 @@ export default function ListingDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
+      <div className="min-h-screen flex flex-col bg-[#f5f5f5]">
         <Navbar />
-        <div className="flex-1 flex items-center justify-center">
-          <Loader2 className="h-10 w-10 animate-spin text-orange-400" />
+        <div className="flex-1 flex flex-col items-center justify-center gap-3">
+          <Loader2 className="h-10 w-10 animate-spin text-orange-500" />
+          <p className="text-sm text-gray-500">Loading product…</p>
         </div>
         <Footer />
       </div>
@@ -102,12 +103,13 @@ export default function ListingDetailPage() {
 
   if (!listing) {
     return (
-      <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
+      <div className="min-h-screen flex flex-col bg-[#f5f5f5]">
         <Navbar />
         <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center p-6">
-          <p className="text-5xl">😕</p>
-          <h2 className="text-2xl font-black dark:text-white">Listing not found</h2>
-          <Link href="/listings" className="bg-orange-400 text-gray-900 font-bold px-6 py-3 rounded-xl">Browse Products</Link>
+          <div className="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center text-5xl">😕</div>
+          <h2 className="text-2xl font-black text-gray-800">Product Not Found</h2>
+          <p className="text-gray-400 text-sm">This listing may have been removed or is no longer available.</p>
+          <Link href="/listings" className="bg-orange-500 text-white font-bold px-6 py-3 rounded-xl">Browse Products</Link>
         </div>
         <Footer />
       </div>
@@ -126,11 +128,11 @@ export default function ListingDetailPage() {
   const seller = listing.sellers
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
+    <div className="min-h-screen flex flex-col bg-[#f5f5f5]">
       <Navbar />
 
       {/* Breadcrumb */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+      <div className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-2 max-w-6xl">
           <nav className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
             <Link href="/" className="hover:text-orange-500 transition-colors">Home</Link>
