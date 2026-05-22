@@ -277,13 +277,16 @@ export default function ListingDetailPage() {
 
             {/* WhatsApp contact */}
             <a
-              href={`https://wa.me/254701059192?text=Hi, I'm interested in: ${listing.title} - KES ${displayPrice.toLocaleString()} (${typeof window !== 'undefined' ? window.location.href : ''})`}
+              href={`https://wa.me/${listing.sellers?.phone?.replace(/[^0-9]/g, '') || '254701059192'}?text=${encodeURIComponent(`Hi, I'm interested in your listing: "${listing.title}" — KES ${displayPrice.toLocaleString()}. Is it still available?`)}`}
               target="_blank" rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition-colors"
             >
               <MessageCircle className="h-5 w-5" />
               Contact Seller on WhatsApp
             </a>
+            <p className="text-xs text-gray-400 dark:text-gray-500 text-center mt-2">
+              💡 Payment is arranged directly with the seller — M-Pesa, cash, or bank transfer.
+            </p>
 
             {/* Trust badges */}
             <div className="grid grid-cols-3 gap-2 pt-1">

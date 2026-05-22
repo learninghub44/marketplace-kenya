@@ -71,7 +71,7 @@ export default function AdminDashboard() {
         fetch(`${API}/api/admin/stats`, { headers: h }).then(r => r.json()),
         fetch(`${API}/api/admin/listings?status=pending`, { headers: h }).then(r => r.json()),
         fetch(`${API}/api/admin/listings`, { headers: h }).then(r => r.json()),
-        fetch(`${API}/api/admin/users`, { headers: h }).then(r => r.json()),
+        fetch(`${API}/api/admin/users?include_banned=true`, { headers: h }).then(r => r.json()),
         fetch(`${API}/api/admin/tickets`, { headers: h }).then(r => r.json()),
         fetch(`${API}/api/admin/reports`, { headers: h }).then(r => r.json()),
         fetch(`${API}/api/admin/revenue`, { headers: h }).then(r => r.json()),
