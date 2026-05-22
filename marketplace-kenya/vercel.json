@@ -4,68 +4,14 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "env": {
-    "NEXT_PUBLIC_SUPABASE_URL": {
-      "description": "Supabase project URL",
-      "required": true
-    },
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": {
-      "description": "Supabase anonymous key",
-      "required": true
-    },
-    "SUPABASE_SERVICE_ROLE_KEY": {
-      "description": "Supabase service role key",
-      "required": true
-    },
-    "OPENAI_API_KEY": {
-      "description": "OpenAI API key",
-      "required": true
-    },
-    "PAYHERO_API_KEY": {
-      "description": "PayHero API key",
-      "required": true
-    },
-    "PAYHERO_CHANNEL_ID": {
-      "description": "PayHero channel ID",
-      "required": true
-    },
-    "PAYHERO_CALLBACK_URL": {
-      "description": "PayHero callback URL",
-      "required": true
-    },
-    "JWT_SECRET": {
-      "description": "JWT secret key",
-      "required": true,
-      "generator": "secret"
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        }
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
       ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
     }
   ]
 }
