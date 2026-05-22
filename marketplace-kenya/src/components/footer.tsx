@@ -96,8 +96,8 @@ export default function Footer() {
         <div className="mt-6 pt-6 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
           <p>© 2026 Sokoni Kenya · Free marketplace for everyone 🇰🇪</p>
           <div className="flex gap-4">
-            <Link href="/support" className="hover:text-gray-300 transition-colors">Terms</Link>
-            <Link href="/support" className="hover:text-gray-300 transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-gray-300 transition-colors">Terms &amp; Conditions</Link>
+            <Link href="/terms" className="hover:text-gray-300 transition-colors">Privacy Policy</Link>
             <Link href="/support" className="hover:text-gray-300 transition-colors">Contact</Link>
           </div>
         </div>
