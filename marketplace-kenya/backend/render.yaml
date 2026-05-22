@@ -1,0 +1,37 @@
+services:
+  - type: web
+    name: kenya-marketplace-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: FRONTEND_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: PAYHERO_USERNAME
+        sync: false
+      - key: PAYHERO_PASSWORD
+        sync: false
+      - key: PAYHERO_CALLBACK_URL
+        sync: false
+      - key: JWT_SECRET
+        generate: true
+      - key: RESEND_API_KEY
+        sync: false
+      - key: AFRICASTALKING_API_KEY
+        sync: false
+      - key: AFRICASTALKING_USERNAME
+        sync: false
