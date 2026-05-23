@@ -5,14 +5,10 @@ const nextConfig = {
       { protocol: 'https', hostname: '**.supabase.co' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
     ],
+    unoptimized: true,
   },
   experimental: {
     serverActions: { bodySizeLimit: '10mb' },
-  },
-  // Don't include webpack cache in output
-  webpack: (config, { isServer }) => {
-    config.cache = false
-    return config
   },
 }
 module.exports = nextConfig
