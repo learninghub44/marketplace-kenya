@@ -12,7 +12,7 @@ import ProductGallery from '@/components/ProductGallery'
 import { getUser, authHeaders } from '@/lib/auth'
 import { useCart } from '@/store/cart'
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://marketplace-kenya.onrender.com'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
 
 const CONDITION_LABELS: Record<string, string> = { new: 'Brand New', used: 'Used', refurbished: 'Refurbished' }
 
@@ -424,4 +424,9 @@ export default function ListingDetailPage() {
       <Footer />
     </div>
   )
+}
+
+// Required for static export - actual data is fetched client-side
+export function generateStaticParams() {
+  return []
 }
