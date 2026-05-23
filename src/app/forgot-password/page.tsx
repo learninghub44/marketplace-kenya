@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { ShoppingBag, Mail, ArrowLeft, CheckCircle, Loader2 } from 'lucide-react'
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://marketplace-kenya.onrender.com'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('')

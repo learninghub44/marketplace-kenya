@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { ShoppingBag, Plus, Package, Eye, Trash2, LogOut, Clock, CheckCircle, XCircle, Loader2, MessageCircle } from 'lucide-react'
 import { getUser, clearAuth, authHeaders } from '@/lib/auth'
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://marketplace-kenya.onrender.com'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
 
 const statusBadge = (status: string) => {
   const styles: Record<string, string> = {

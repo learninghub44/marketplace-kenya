@@ -1,184 +1,169 @@
-"use client"
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowRight, MessageCircle, Tag, Shield, Zap, TrendingUp, ChevronRight, MapPin } from 'lucide-react'
+import { ArrowRight, Tag, Shield, Truck, TrendingUp, Star, MessageCircle } from 'lucide-react'
 import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
-
-const BANNERS = [
-  { bg: 'from-orange-500 to-orange-600', title: 'Buy & Sell Anything in Kenya', sub: 'The free local marketplace — no fees, no commissions', cta: 'Shop Now', href: '/listings' },
-  { bg: 'from-gray-800 to-gray-900', title: 'Sell for Free Today', sub: 'List unlimited products, reach thousands of buyers', cta: 'Start Selling', href: '/register' },
-  { bg: 'from-green-600 to-emerald-700', title: 'Pay via M-Pesa', sub: 'Fast, secure, trusted by 50,000+ Kenyans', cta: 'Learn More', href: '/support' },
+const categories = [
+  { name: 'Electronics', emoji: '📱', image: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&q=80', count: '2,400+' },
+  { name: 'Fashion', emoji: '👗', image: 'https://images.unsplash.com/photo-1558171813-c57e21d86b46?w=400&q=80', count: '5,100+' },
+  { name: 'Home & Garden', emoji: '🏡', image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80', count: '1,800+' },
+  { name: 'Vehicles', emoji: '🚗', image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=400&q=80', count: '900+' },
+  { name: 'Property', emoji: '🏢', image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&q=80', count: '650+' },
+  { name: 'Agriculture', emoji: '🌾', image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=400&q=80', count: '1,200+' },
+  { name: 'Sports', emoji: '⚽', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400&q=80', count: '430+' },
+  { name: 'Services', emoji: '💼', image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=80', count: '320+' },
 ]
 
-const CATS = [
-  { name: 'Phones & Tablets', icon: '📱', q: 'Electronics', img: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=200&q=80' },
-  { name: 'Fashion', icon: '👗', q: 'Fashion', img: 'https://images.unsplash.com/photo-1558171813-c57e21d86b46?w=200&q=80' },
-  { name: 'Home & Office', icon: '🏠', q: 'Home & Garden', img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200&q=80' },
-  { name: 'Vehicles', icon: '🚗', q: 'Vehicles', img: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=200&q=80' },
-  { name: 'Agriculture', icon: '🌾', q: 'Agriculture', img: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=200&q=80' },
-  { name: 'Property', icon: '🏢', q: 'Property', img: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=200&q=80' },
-  { name: 'Sports', icon: '⚽', q: 'Sports', img: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=200&q=80' },
-  { name: 'Health & Beauty', icon: '💊', q: 'Health & Beauty', img: 'https://images.unsplash.com/photo-1576426863848-c21f53c60b19?w=200&q=80' },
+const benefits = [
+  { icon: Tag, title: 'Free to List', desc: 'Post unlimited products — zero commission, zero hidden fees.' },
+  { icon: Shield, title: 'Verified Sellers', desc: 'Every listing reviewed by our admin before going live.' },
+  { icon: Truck, title: 'All 47 Counties', desc: 'Connect with buyers and sellers across all of Kenya.' },
+  { icon: TrendingUp, title: 'M-Pesa Payments', desc: 'Pay and receive securely via M-Pesa.' },
 ]
 
-const WHY = [
-  { icon: Tag, title: '100% Free', desc: 'No listing fees, no commissions ever' },
-  { icon: Shield, title: 'Verified', desc: 'Every listing reviewed by our team' },
-  { icon: Zap, title: 'M-Pesa', desc: 'Instant secure mobile payments' },
-  { icon: TrendingUp, title: '47 Counties', desc: 'Reach buyers across all of Kenya' },
+const cities = [
+  { city: 'Nairobi', image: 'https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=300&q=80' },
+  { city: 'Mombasa', image: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=300&q=80' },
+  { city: 'Kisumu', image: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=300&q=80' },
+  { city: 'Nakuru', image: 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=300&q=80' },
+  { city: 'Eldoret', image: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=300&q=80' },
+  { city: 'All Kenya', image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=300&q=80' },
 ]
 
-export default function HomePage() {
-  const [banner, setBanner] = useState(0)
-  const [listings, setListings] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const t = setInterval(() => setBanner(i => (i + 1) % BANNERS.length), 4000)
-    return () => clearInterval(t)
-  }, [])
-
-  useEffect(() => {
-    fetch(`${API}/api/listings?status=active&limit=10`)
-      .then(r => r.json()).then(d => { if (d.success) setListings(d.listings || []) })
-      .catch(() => {}).finally(() => setLoading(false))
-  }, [])
-
-  const b = BANNERS[banner]
-
+export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-950 flex flex-col">
-      <Navbar />
-      <main className="flex-1 max-w-6xl mx-auto w-full px-3 py-4 space-y-4">
+    <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
+      <Navbar showSearch />
 
-        {/* Hero Banner */}
-        <div className={`bg-gradient-to-r ${b.bg} rounded-2xl p-6 sm:p-10 flex items-center justify-between min-h-[160px] transition-all duration-500`}>
-          <div className="text-white">
-            <h1 className="text-2xl sm:text-4xl font-black leading-tight">{b.title}</h1>
-            <p className="text-white/80 mt-1 text-sm sm:text-base">{b.sub}</p>
-            <Link href={b.href} className="inline-flex items-center gap-2 mt-4 bg-white text-gray-900 font-bold px-5 py-2.5 rounded-full text-sm hover:bg-gray-100 transition-colors">
-              {b.cta} <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-          <div className="hidden sm:flex gap-1.5 flex-col">
-            {BANNERS.map((_, i) => (
-              <button key={i} onClick={() => setBanner(i)} className={`w-2 rounded-full transition-all ${i === banner ? 'h-6 bg-white' : 'h-2 bg-white/40'}`} />
-            ))}
-          </div>
-        </div>
-
-        {/* Category Grid */}
-        <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-sm">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="font-black text-gray-900 dark:text-white">Shop by Category</h2>
-            <Link href="/listings" className="text-orange-500 text-xs font-semibold flex items-center gap-0.5">See All <ChevronRight className="h-3.5 w-3.5" /></Link>
-          </div>
-          <div className="grid grid-cols-4 sm:grid-cols-8 gap-3">
-            {CATS.map(cat => (
-              <Link key={cat.name} href={`/listings?category=${encodeURIComponent(cat.q)}`} className="flex flex-col items-center gap-1.5 group">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden border-2 border-gray-100 dark:border-gray-700 group-hover:border-orange-400 transition-colors">
-                  <img src={cat.img} alt={cat.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-                </div>
-                <span className="text-xs text-center text-gray-600 dark:text-gray-400 group-hover:text-orange-500 leading-tight font-medium">{cat.name}</span>
+      {/* Hero */}
+      <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-orange-950 overflow-hidden">
+        <div className="absolute inset-0 opacity-10" style={{backgroundImage:"url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1400&q=80')",backgroundSize:'cover',backgroundPosition:'center'}} />
+        <div className="relative container mx-auto px-4 py-14 lg:py-20 flex flex-col lg:flex-row items-center gap-10">
+          <div className="text-white space-y-5 max-w-xl">
+            <div className="inline-flex items-center gap-2 bg-orange-400/20 border border-orange-400/40 rounded-full px-4 py-1.5 text-orange-300 text-sm font-medium">
+              🇰🇪 Kenya&apos;s Trusted Local Marketplace
+            </div>
+            <h1 className="text-4xl lg:text-6xl font-black leading-tight">
+              Buy &amp; Sell on<br /><span className="text-orange-400">Sokoni Kenya</span>
+            </h1>
+            <p className="text-gray-300 text-lg">Join 50,000+ Kenyans trading electronics, fashion, property, vehicles and more — safely and for free.</p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/listings" className="bg-orange-400 hover:bg-orange-500 text-gray-900 font-black px-6 py-3 rounded-xl flex items-center gap-2 transition-colors">
+                Browse Products <ArrowRight className="h-4 w-4" />
               </Link>
-            ))}
+              <Link href="/register" className="border border-white/30 hover:bg-white/10 text-white px-6 py-3 rounded-xl font-semibold transition-colors">
+                Start Selling Free
+              </Link>
+            </div>
+            <div className="flex flex-wrap gap-4 text-sm text-gray-300 pt-1">
+              <span>✅ Free listings</span><span>✅ M-Pesa</span><span>✅ 47 counties</span><span>✅ Admin verified</span>
+            </div>
           </div>
-        </div>
-
-        {/* Latest Listings */}
-        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm overflow-hidden">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800">
-            <div className="flex items-center gap-2">
-              <div className="w-1 h-5 bg-orange-500 rounded-full" />
-              <h2 className="font-black text-gray-900 dark:text-white">Latest Listings</h2>
-              <span className="bg-orange-100 dark:bg-orange-900/30 text-orange-600 text-xs font-bold px-2 py-0.5 rounded-full">NEW</span>
-            </div>
-            <Link href="/listings" className="text-orange-500 text-xs font-semibold flex items-center gap-0.5">See All <ChevronRight className="h-3.5 w-3.5" /></Link>
-          </div>
-
-          {loading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-px bg-gray-100 dark:bg-gray-800">
-              {[...Array(10)].map((_, i) => (
-                <div key={i} className="bg-white dark:bg-gray-900 p-3 animate-pulse">
-                  <div className="bg-gray-200 dark:bg-gray-700 rounded-xl h-36 mb-2" />
-                  <div className="bg-gray-200 dark:bg-gray-700 rounded h-3 mb-1" />
-                  <div className="bg-gray-200 dark:bg-gray-700 rounded h-4 w-1/2" />
-                </div>
-              ))}
-            </div>
-          ) : listings.length === 0 ? (
-            <div className="text-center py-16 px-4">
-              <p className="text-5xl mb-3">🛒</p>
-              <h3 className="font-bold text-gray-900 dark:text-white text-lg">No listings yet</h3>
-              <p className="text-gray-500 text-sm mt-1">Be the first to list a product!</p>
-              <Link href="/register" className="inline-block mt-4 bg-orange-500 text-white font-bold px-6 py-2.5 rounded-full text-sm">Start Selling Free</Link>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-px bg-gray-100 dark:bg-gray-800">
-              {listings.map(l => (
-                <Link key={l.id} href={`/listings/${l.id}`} className="bg-white dark:bg-gray-900 hover:bg-orange-50 dark:hover:bg-gray-800 transition-colors group block">
-                  <div className="relative overflow-hidden">
-                    {l.images?.[0] ? (
-                      <img src={l.images[0]} alt={l.title} className="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition-transform duration-300" />
-                    ) : (
-                      <div className="w-full h-36 sm:h-44 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                        <Tag className="h-10 w-10 text-gray-300" />
-                      </div>
-                    )}
-                    <div className="absolute top-2 left-2 bg-orange-500 text-white text-xs font-bold px-1.5 py-0.5 rounded">{l.category?.slice(0,10)}</div>
-                  </div>
-                  <div className="p-2.5">
-                    <p className="text-xs text-gray-700 dark:text-gray-300 line-clamp-2 leading-tight mb-1">{l.title}</p>
-                    <p className="font-black text-orange-500">KES {l.price?.toLocaleString()}</p>
-                    <p className="text-xs text-gray-400 flex items-center gap-0.5 mt-0.5"><MapPin className="h-2.5 w-2.5" />{l.location}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Why Sokoni */}
-        <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-sm">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-1 h-5 bg-orange-500 rounded-full" />
-            <h2 className="font-black text-gray-900 dark:text-white">Why Sokoni Kenya?</h2>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {WHY.map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="flex flex-col items-center text-center gap-2 p-3 rounded-xl bg-orange-50 dark:bg-orange-900/10 border border-orange-100 dark:border-orange-900/30">
-                <div className="bg-orange-500 p-2.5 rounded-xl"><Icon className="h-5 w-5 text-white" /></div>
-                <p className="font-bold text-sm dark:text-white">{title}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{desc}</p>
+          <div className="hidden lg:grid grid-cols-2 gap-3 w-72 flex-shrink-0">
+            {[{label:'50K+',sub:'Active Users'},{label:'120K+',sub:'Products Listed'},{label:'47',sub:'Counties'},{label:'Free',sub:'Forever'}].map(s=>(
+              <div key={s.label} className="bg-white/10 backdrop-blur border border-white/20 rounded-xl p-4 text-white text-center">
+                <p className="text-2xl font-black text-orange-400">{s.label}</p>
+                <p className="text-xs text-gray-300 mt-1">{s.sub}</p>
               </div>
             ))}
           </div>
         </div>
+      </div>
 
-        {/* Sell CTA */}
-        <div className="bg-gray-900 dark:bg-gray-800 rounded-2xl p-6 flex flex-col sm:flex-row items-center gap-4">
-          <div className="text-white flex-1">
-            <p className="text-orange-400 text-xs font-bold uppercase tracking-widest mb-1">For Sellers</p>
-            <h3 className="text-xl sm:text-2xl font-black">Start Selling Today — It's Free</h3>
-            <p className="text-gray-400 text-sm mt-1">List products, reach thousands of buyers, get paid via M-Pesa.</p>
-          </div>
-          <div className="flex flex-col gap-2 w-full sm:w-auto">
-            <Link href="/register" className="bg-orange-500 hover:bg-orange-600 text-white font-black px-8 py-3 rounded-full text-center text-sm">Create Free Account →</Link>
-            <Link href="/login" className="border border-gray-600 text-gray-400 hover:text-white hover:border-gray-400 px-8 py-3 rounded-full text-center text-sm">Already have an account</Link>
+      {/* Benefits */}
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-gray-100 dark:divide-gray-700">
+            {benefits.map(({icon:Icon,title,desc})=>(
+              <div key={title} className="flex items-start gap-3 p-4">
+                <div className="bg-orange-50 dark:bg-orange-900/30 p-2 rounded-lg flex-shrink-0"><Icon className="h-5 w-5 text-orange-500" /></div>
+                <div><p className="font-semibold text-sm dark:text-white">{title}</p><p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 hidden sm:block">{desc}</p></div>
+              </div>
+            ))}
           </div>
         </div>
+      </div>
 
-      </main>
+      <div className="container mx-auto px-4 py-8 flex-1 space-y-10">
+        {/* Categories */}
+        <section>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-black dark:text-white">Shop by Category</h2>
+            <Link href="/listings" className="text-orange-500 hover:text-orange-600 text-sm font-medium flex items-center gap-1">View all <ArrowRight className="h-3.5 w-3.5" /></Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+            {categories.map(cat=>(
+              <Link key={cat.name} href={`/listings?category=${encodeURIComponent(cat.name)}`}
+                className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5">
+                <div className="relative h-20 overflow-hidden">
+                  <img src={cat.image} alt={cat.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <span className="absolute top-2 left-2 text-lg">{cat.emoji}</span>
+                </div>
+                <div className="p-2">
+                  <p className="text-xs font-bold dark:text-white leading-tight">{cat.name}</p>
+                  <p className="text-xs text-gray-400 mt-0.5">{cat.count} items</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
 
-      {/* WhatsApp float */}
-      <a href="https://wa.me/254701059192" target="_blank" rel="noopener noreferrer"
-        className="fixed bottom-5 right-5 bg-green-500 hover:bg-green-600 text-white p-3.5 rounded-full shadow-xl z-40 hover:scale-110 transition-all flex items-center gap-2 group">
-        <MessageCircle className="h-5 w-5" />
-        <span className="hidden group-hover:block text-sm font-semibold pr-1 whitespace-nowrap">WhatsApp Us</span>
-      </a>
+        {/* Sell CTA */}
+        <section className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl overflow-hidden">
+          <div className="flex flex-col sm:flex-row items-center justify-between p-8 gap-6">
+            <div className="text-white space-y-2">
+              <p className="text-orange-400 font-semibold text-sm uppercase tracking-wide">For Sellers</p>
+              <h3 className="text-2xl lg:text-3xl font-black">Start Selling Today</h3>
+              <p className="text-gray-300 max-w-sm text-sm">List products for free. Reach thousands of buyers across Kenya. Get paid via M-Pesa instantly.</p>
+            </div>
+            <div className="flex flex-col gap-3 flex-shrink-0">
+              <Link href="/register" className="bg-orange-400 hover:bg-orange-500 text-gray-900 font-black px-8 py-3 rounded-xl text-center transition-colors">Create Free Account</Link>
+              <Link href="/login" className="border border-white/30 hover:bg-white/10 text-white px-8 py-3 rounded-xl text-center text-sm font-semibold transition-colors">Already have an account? Login</Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Cities */}
+        <section>
+          <h2 className="text-xl font-black dark:text-white mb-4">Browse by City</h2>
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+            {cities.map(({city,image})=>(
+              <Link key={city} href={`/listings?location=${encodeURIComponent(city)}`}
+                className="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all">
+                <img src={image} alt={city} className="w-full h-20 object-cover group-hover:scale-105 transition-transform duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                <p className="absolute bottom-2 left-0 right-0 text-center text-white text-xs font-bold">{city}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* Testimonial strip */}
+        <section className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
+          <h2 className="text-xl font-black dark:text-white mb-4 text-center">What Kenyans Say</h2>
+          <div className="grid sm:grid-cols-3 gap-4">
+            {[
+              {name:'Mary W., Nairobi', text:'Sold my old laptop in 2 days! The process was simple and the buyer paid via M-Pesa instantly.', stars:5},
+              {name:'James K., Mombasa', text:'Found exactly what I was looking for at a great price. Contacting the seller via WhatsApp was easy.', stars:5},
+              {name:'Aisha M., Kisumu', text:'As a small business owner, listing my products here has brought me new customers every week.', stars:5},
+            ].map(t=>(
+              <div key={t.name} className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 space-y-2">
+                <div className="flex gap-0.5">{[...Array(t.stars)].map((_,i)=><Star key={i} className="h-4 w-4 fill-orange-400 text-orange-400" />)}</div>
+                <p className="text-sm text-gray-600 dark:text-gray-300 italic">"{t.text}"</p>
+                <p className="text-xs font-bold text-gray-700 dark:text-gray-400">{t.name}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* WhatsApp sticky CTA */}
+        <a href="https://wa.me/254701059192" target="_blank" rel="noopener noreferrer"
+          className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg flex items-center gap-2 z-40 transition-colors group">
+          <MessageCircle className="h-6 w-6" />
+          <span className="hidden group-hover:block text-sm font-semibold pr-1">WhatsApp Support</span>
+        </a>
+      </div>
 
       <Footer />
     </div>

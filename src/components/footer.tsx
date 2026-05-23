@@ -1,85 +1,104 @@
 import Link from 'next/link'
-import { Phone, Mail, MessageCircle, ChevronRight } from 'lucide-react'
+import { ShoppingBag, Phone, Mail, MessageCircle } from 'lucide-react'
 
 export default function Footer() {
   return (
-    <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-6">
-      {/* Newsletter strip */}
-      <div className="bg-orange-500 py-4 px-4">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center gap-3">
-          <div className="text-white flex-1">
-            <p className="font-black text-sm">📧 Get deals in your inbox</p>
-            <p className="text-orange-100 text-xs">New listings, offers and updates from Sokoni Kenya</p>
+    <footer className="bg-gray-900 dark:bg-gray-950 text-white mt-auto">
+      <div className="container mx-auto px-4 py-10">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 text-sm">
+          {/* Brand */}
+          <div className="lg:col-span-1">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="bg-orange-400 p-1.5 rounded-lg flex-shrink-0">
+                <ShoppingBag className="h-4 w-4 text-gray-900" />
+              </div>
+              <span className="font-black text-lg"><span className="text-white">Sokoni</span><span className="text-orange-400"> Kenya</span></span>
+            </div>
+            <p className="text-gray-400 text-xs leading-relaxed">Kenya's free marketplace for buyers and sellers across all 47 counties. Buy, sell and connect securely.</p>
+            <div className="flex gap-3 mt-4">
+              <a href="https://wa.me/254701059192" target="_blank" rel="noopener noreferrer" className="bg-green-600 hover:bg-green-700 p-2 rounded-lg transition-colors" title="WhatsApp">
+                <MessageCircle className="h-4 w-4" />
+              </a>
+              <a href="tel:+254701059192" className="bg-blue-600 hover:bg-blue-700 p-2 rounded-lg transition-colors" title="Call us">
+                <Phone className="h-4 w-4" />
+              </a>
+              <a href="mailto:sokonikenya@gmail.com" className="bg-orange-500 hover:bg-orange-600 p-2 rounded-lg transition-colors" title="Email us">
+                <Mail className="h-4 w-4" />
+              </a>
+            </div>
           </div>
-          <div className="flex w-full sm:w-auto">
-            <input type="email" placeholder="Enter your email" className="flex-1 sm:w-56 px-3 py-2 text-sm rounded-l-full focus:outline-none" />
-            <button className="bg-gray-900 hover:bg-gray-800 text-white font-bold px-4 py-2 rounded-r-full text-sm whitespace-nowrap">Join Now →</button>
+
+          {/* Marketplace */}
+          <div>
+            <h4 className="font-bold mb-3 text-orange-400 text-sm uppercase tracking-wide">Marketplace</h4>
+            <ul className="space-y-2 text-gray-400">
+              <li><Link href="/listings" className="hover:text-white transition-colors flex items-center gap-1.5">Browse Listings</Link></li>
+              <li><Link href="/listings?category=Electronics" className="hover:text-white transition-colors">Electronics</Link></li>
+              <li><Link href="/listings?category=Fashion" className="hover:text-white transition-colors">Fashion</Link></li>
+              <li><Link href="/listings?category=Vehicles" className="hover:text-white transition-colors">Vehicles</Link></li>
+              <li><Link href="/listings?category=Property" className="hover:text-white transition-colors">Property</Link></li>
+            </ul>
+          </div>
+
+          {/* Account */}
+          <div>
+            <h4 className="font-bold mb-3 text-orange-400 text-sm uppercase tracking-wide">Account</h4>
+            <ul className="space-y-2 text-gray-400">
+              <li><Link href="/login" className="hover:text-white transition-colors">Login</Link></li>
+              <li><Link href="/register" className="hover:text-white transition-colors">Create Account</Link></li>
+              <li><Link href="/seller" className="hover:text-white transition-colors">Seller Dashboard</Link></li>
+              <li><Link href="/buyer" className="hover:text-white transition-colors">Buyer Dashboard</Link></li>
+              <li><Link href="/forgot-password" className="hover:text-white transition-colors">Forgot Password</Link></li>
+            </ul>
+          </div>
+
+          {/* Support */}
+          <div>
+            <h4 className="font-bold mb-3 text-orange-400 text-sm uppercase tracking-wide">Support & Contact</h4>
+            <ul className="space-y-2.5 text-gray-400 text-xs">
+              <li><Link href="/support" className="hover:text-white transition-colors font-medium text-sm">Help Center</Link></li>
+              <li className="flex items-center gap-2">
+                <Mail className="h-3.5 w-3.5 text-orange-400 flex-shrink-0" />
+                <a href="mailto:sokonikenya@gmail.com" className="hover:text-white transition-colors break-all">sokonikenya@gmail.com</a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Phone className="h-3.5 w-3.5 text-orange-400 flex-shrink-0" />
+                <a href="tel:+254701059192" className="hover:text-white transition-colors">+254 701 059 192</a>
+              </li>
+              <li className="flex items-center gap-2">
+                <MessageCircle className="h-3.5 w-3.5 text-green-400 flex-shrink-0" />
+                <a href="https://wa.me/254701059192" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">WhatsApp: 0701 059 192</a>
+              </li>
+            </ul>
+            <div className="mt-4 p-3 bg-gray-800 dark:bg-gray-900 rounded-lg text-xs text-gray-400">
+              <p className="font-semibold text-white text-xs mb-1">🕒 Support Hours</p>
+              <p>Mon–Sat: 8:00am – 8:00pm</p>
+              <p>Sun: 10:00am – 4:00pm</p>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Main footer */}
-      <div className="max-w-6xl mx-auto px-4 py-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
-        {/* Brand */}
-        <div>
-          <div className="flex items-center gap-2 mb-3">
-            <div className="bg-orange-500 text-white font-black text-xs px-2 py-1 rounded-lg">SK</div>
-            <span className="font-black text-gray-900 dark:text-white">Sokoni<span className="text-orange-500">Kenya</span></span>
-          </div>
-          <p className="text-gray-500 dark:text-gray-400 text-xs leading-relaxed mb-4">Kenya's free marketplace for buyers and sellers across all 47 counties. No fees, no commissions — ever.</p>
-          <div className="flex gap-2">
-            <a href="https://wa.me/254701059192" target="_blank" rel="noopener noreferrer" className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg transition-colors"><MessageCircle className="h-4 w-4" /></a>
-            <a href="tel:+254701059192" className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg transition-colors"><Phone className="h-4 w-4" /></a>
-            <a href="mailto:sokonikenya@gmail.com" className="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded-lg transition-colors"><Mail className="h-4 w-4" /></a>
-          </div>
+        {/* Trust badges */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8 pt-8 border-t border-gray-800">
+          {[
+            { icon: '🔒', label: 'Secure Platform' },
+            { icon: '✅', label: 'Verified Sellers' },
+            { icon: '📱', label: 'M-Pesa Payments' },
+            { icon: '🇰🇪', label: '47 Counties' },
+          ].map(b => (
+            <div key={b.label} className="flex items-center gap-2 text-xs text-gray-400">
+              <span className="text-base">{b.icon}</span>{b.label}
+            </div>
+          ))}
         </div>
 
-        {/* For Buyers */}
-        <div>
-          <h4 className="font-black text-gray-900 dark:text-white mb-3 text-sm uppercase tracking-wide">For Buyers</h4>
-          <ul className="space-y-2 text-gray-500 dark:text-gray-400 text-xs">
-            {[['Browse Listings','/listings'],['Electronics','/listings?category=Electronics'],['Fashion','/listings?category=Fashion'],['Vehicles','/listings?category=Vehicles'],['Property','/listings?category=Property'],['My Orders','/buyer/orders']].map(([l,h]) => (
-              <li key={h}><Link href={h} className="hover:text-orange-500 flex items-center gap-1 transition-colors"><ChevronRight className="h-3 w-3 flex-shrink-0" />{l}</Link></li>
-            ))}
-          </ul>
-        </div>
-
-        {/* For Sellers */}
-        <div>
-          <h4 className="font-black text-gray-900 dark:text-white mb-3 text-sm uppercase tracking-wide">For Sellers</h4>
-          <ul className="space-y-2 text-gray-500 dark:text-gray-400 text-xs">
-            {[['Create Account','/register'],['Seller Dashboard','/seller'],['Post a Listing','/seller/listings/create'],['Seller Profile','/seller/profile'],['Pricing','/pricing']].map(([l,h]) => (
-              <li key={h}><Link href={h} className="hover:text-orange-500 flex items-center gap-1 transition-colors"><ChevronRight className="h-3 w-3 flex-shrink-0" />{l}</Link></li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Help */}
-        <div>
-          <h4 className="font-black text-gray-900 dark:text-white mb-3 text-sm uppercase tracking-wide">Help & Contact</h4>
-          <ul className="space-y-2 text-gray-500 dark:text-gray-400 text-xs mb-4">
-            {[['Help Center','/support'],['Contact Us','/support'],['Login','/login'],['Forgot Password','/forgot-password'],['Terms & Privacy','/terms']].map(([l,h]) => (
-              <li key={h}><Link href={h} className="hover:text-orange-500 flex items-center gap-1 transition-colors"><ChevronRight className="h-3 w-3 flex-shrink-0" />{l}</Link></li>
-            ))}
-          </ul>
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-3 space-y-1 text-xs text-gray-500 dark:text-gray-400">
-            <p className="font-semibold text-gray-700 dark:text-gray-300 text-xs">📞 Contact Us</p>
-            <a href="tel:+254701059192" className="hover:text-orange-500 block">+254 701 059 192</a>
-            <a href="https://wa.me/254701059192" target="_blank" rel="noopener noreferrer" className="hover:text-green-500 block">WhatsApp: 0701 059 192</a>
-            <a href="mailto:sokonikenya@gmail.com" className="hover:text-orange-500 block break-all">sokonikenya@gmail.com</a>
-            <p className="text-gray-400 text-xs">Mon–Sat 8am–8pm · Sun 10am–4pm</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom bar */}
-      <div className="border-t border-gray-100 dark:border-gray-800 px-4 py-3">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-400">
+        {/* Bottom bar */}
+        <div className="mt-6 pt-6 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
           <p>© 2026 Sokoni Kenya · Free marketplace for everyone 🇰🇪</p>
           <div className="flex gap-4">
-            <Link href="/terms" className="hover:text-orange-500">Terms</Link>
-            <Link href="/terms" className="hover:text-orange-500">Privacy</Link>
-            <Link href="/support" className="hover:text-orange-500">Contact</Link>
+            <Link href="/support" className="hover:text-gray-300 transition-colors">Terms</Link>
+            <Link href="/support" className="hover:text-gray-300 transition-colors">Privacy</Link>
+            <Link href="/support" className="hover:text-gray-300 transition-colors">Contact</Link>
           </div>
         </div>
       </div>

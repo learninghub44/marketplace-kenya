@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { ShoppingBag, Phone, Mail, MessageCircle, Clock, CheckCircle, Loader2, ChevronDown, ChevronUp } from 'lucide-react'
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://marketplace-kenya.onrender.com'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
 
 const faqs = [
   { q: 'How do I create a seller account?', a: 'Click "Create Free Account" on the homepage, choose "Seller" as your role, and fill in your details. Your account is ready immediately.' },

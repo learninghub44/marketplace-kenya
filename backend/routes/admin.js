@@ -33,7 +33,7 @@ router.get('/stats', ...adminAuth, async (req, res) => {
 router.get('/users', ...adminAuth, async (req, res) => {
   try {
     const { data: users, error } = await supabaseAdmin
-      .from('users').select('id,email,name,role,phone,created_at,banned,ban_reason').order('created_at', { ascending: false });
+      .from('users').select('id,email,role,phone,created_at').order('created_at', { ascending: false });
     if (error) throw error;
     res.json({ success: true, users });
   } catch (e) { res.status(500).json({ success: false, error: e.message }); }
@@ -162,109 +162,3 @@ router.post('/reports/:id/resolve', ...adminAuth, async (req, res) => {
 });
 
 module.exports = router;
-
-// ── Ban / Unban ────────────────────────────────────────────────────────────
-router.post('/users/:id/ban', ...adminAuth, async (req, res) => {
-  try {
-    const { reason = 'Violation of terms' } = req.body;
-    if (req.params.id === req.user.userId)
-      return res.status(400).json({ success: false, error: 'Cannot ban yourself' });
-    const { data: u } = await supabaseAdmin.from('users').select('email,role').eq('id', req.params.id).single();
-    if (!u || u.role === 'admin')
-      return res.status(400).json({ success: false, error: 'Cannot ban this user' });
-    await supabaseAdmin.from('users').update({ banned: true, ban_reason: reason }).eq('id', req.params.id);
-    await supabaseAdmin.from('listings').update({ status: 'suspended' }).eq('seller_id', req.params.id);
-    if (u.email) {
-      resend.emails.send({
-        from: 'Sokoni Kenya <noreply@sokonikenya.co.ke>',
-        to: u.email,
-        subject: 'Your Sokoni Kenya account has been suspended',
-        html: `<div style="font-family:sans-serif;padding:24px;max-width:600px"><h2 style="color:#dc2626">Account Suspended</h2><p>Your account has been suspended.</p><p><strong>Reason:</strong> ${reason}</p><p>Contact our support team to appeal.</p></div>`,
-      }).catch(() => {});
-    }
-    res.json({ success: true });
-  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
-});
-
-router.post('/users/:id/unban', ...adminAuth, async (req, res) => {
-  try {
-    await supabaseAdmin.from('users').update({ banned: false, ban_reason: null }).eq('id', req.params.id);
-    await supabaseAdmin.from('listings').update({ status: 'active' }).eq('seller_id', req.params.id).eq('status', 'suspended');
-    res.json({ success: true });
-  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
-});
-
-// ── Feature listing ────────────────────────────────────────────────────────
-router.post('/listings/:id/feature', ...adminAuth, async (req, res) => {
-  try {
-    const { featured } = req.body;
-    await supabaseAdmin.from('listings').update({ featured }).eq('id', req.params.id);
-    res.json({ success: true });
-  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
-});
-
-// ── All listings (any status) ──────────────────────────────────────────────
-router.get('/all-listings', ...adminAuth, async (req, res) => {
-  try {
-    const { data: listings, error } = await supabaseAdmin
-      .from('listings')
-      .select('id,title,status,price,category,location,created_at,seller_id,featured,views')
-      .order('created_at', { ascending: false })
-      .limit(200);
-    if (error) throw error;
-    res.json({ success: true, listings: listings || [] });
-  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
-});
-
-// ── Revenue ────────────────────────────────────────────────────────────────
-router.get('/revenue', ...adminAuth, async (req, res) => {
-  try {
-    const { data: payments } = await supabaseAdmin
-      .from('orders')
-      .select('total_amount,status,created_at')
-      .in('status', ['paid', 'delivered', 'completed'])
-      .order('created_at', { ascending: false });
-    const all = payments || [];
-    const total = all.reduce((s, p) => s + Number(p.total_amount || 0), 0);
-    const now = new Date();
-    const thisMonth = all
-      .filter(p => new Date(p.created_at).getMonth() === now.getMonth() && new Date(p.created_at).getFullYear() === now.getFullYear())
-      .reduce((s, p) => s + Number(p.total_amount || 0), 0);
-    res.json({ success: true, revenue: { total, thisMonth, transactions: all.length, recent: all.slice(0, 10) } });
-  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
-});
-
-// ── Ticket reply ───────────────────────────────────────────────────────────
-router.post('/tickets/:id/reply', ...adminAuth, async (req, res) => {
-  try {
-    const { message } = req.body;
-    if (!message) return res.status(400).json({ success: false, error: 'Message required' });
-    const { data: ticket } = await supabaseAdmin
-      .from('support_tickets').select('subject,user_id').eq('id', req.params.id).single();
-    if (!ticket) return res.status(404).json({ success: false, error: 'Ticket not found' });
-    await supabaseAdmin.from('support_responses').insert({
-      ticket_id: req.params.id, user_id: req.user.userId, message, is_admin: true
-    });
-    await supabaseAdmin.from('support_tickets').update({ status: 'in_progress' }).eq('id', req.params.id);
-    if (ticket.user_id) {
-      const { data: user } = await supabaseAdmin.from('users').select('email').eq('id', ticket.user_id).single();
-      if (user?.email) {
-        resend.emails.send({
-          from: 'Sokoni Kenya Support <noreply@sokonikenya.co.ke>',
-          to: user.email,
-          subject: `Re: ${ticket.subject}`,
-          html: `<div style="font-family:sans-serif;padding:24px;max-width:600px"><h3>Reply from Sokoni Kenya Support</h3><p>${message}</p><hr/><p style="color:#888;font-size:12px">Subject: ${ticket.subject}</p></div>`,
-        }).catch(() => {});
-      }
-    }
-    res.json({ success: true });
-  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
-});
-
-router.get('/tickets/:id/replies', ...adminAuth, async (req, res) => {
-  try {
-    const { data: replies } = await supabaseAdmin
-      .from('support_responses').select('*').eq('ticket_id', req.params.id).order('created_at');
-    res.json({ success: true, replies: replies || [] });
-  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
-});

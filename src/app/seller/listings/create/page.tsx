@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { ShoppingBag, Sparkles, Loader2, ArrowLeft, AlertCircle, CheckCircle } from 'lucide-react'
 import { getToken, getUser, authHeaders } from '@/lib/auth'
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://marketplace-kenya.onrender.com'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
 const CATEGORIES = ['Electronics','Fashion','Home & Garden','Vehicles','Agriculture','Sports','Baby & Kids','Property','Services','Health & Beauty','Business','Education']
 const LOCATIONS = ['Nairobi','Mombasa','Kisumu','Nakuru','Eldoret','Thika','Malindi','Kitale','Nyeri','Garissa','Kakamega','Meru']
 

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { ShoppingBag, ArrowLeft, Save, Loader2, CheckCircle, User, Phone, MapPin, Store } from 'lucide-react'
 import { getUser, authHeaders } from '@/lib/auth'
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://marketplace-kenya.onrender.com'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
 
 export default function SellerProfilePage() {
   const router = useRouter()

@@ -3,62 +3,40 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 
-const authRoutes = require('./routes/auth');
-const listingRoutes = require('./routes/listings');
-const favoriteRoutes = require('./routes/favorites');
-const messageRoutes = require('./routes/messages');
-const aiRoutes = require('./routes/ai');
-const adminRoutes = require('./routes/admin');
-const sellerRoutes = require('./routes/seller');
-const notificationRoutes = require('./routes/notifications');
-const storageRoutes = require('./routes/storage');
-const orderRoutes = require('./routes/orders');
-const categoryRoutes = require('./routes/categories');
-
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// ── CORS ──────────────────────────────────────────────────────────────────────
-app.use(cors({ origin: '*', methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'], allowedHeaders: ['Content-Type','Authorization','Accept'] }));
+app.use(cors({ origin: '*', methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'], allowedHeaders: ['Content-Type','Authorization'] }));
 app.options('*', cors());
-
-// ── Body parsing ──────────────────────────────────────────────────────────────
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 if (process.env.NODE_ENV !== 'test') app.use(morgan('combined'));
 
-// ── Health ────────────────────────────────────────────────────────────────────
-app.get('/', (req, res) => res.json({ status: 'ok', service: 'Sokoni Kenya API', version: '2.0.0' }));
+app.get('/', (req, res) => res.json({ status: 'ok', service: 'Sokoni Kenya API' }));
 app.get('/health', (req, res) => res.json({ status: 'ok', service: 'Sokoni Kenya API' }));
 app.get('/api/health', (req, res) => res.json({ status: 'ok', service: 'Sokoni Kenya API' }));
 
-// ── Routes ────────────────────────────────────────────────────────────────────
-app.use('/api/auth', authRoutes);
-app.use('/api/listings', listingRoutes);
-app.use('/api/favorites', favoriteRoutes);
-app.use('/api/messages', messageRoutes);
-app.use('/api/ai', aiRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/seller', sellerRoutes);
-app.use('/api/notifications', notificationRoutes);
-app.use('/api/storage', storageRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/categories', categoryRoutes);
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/listings', require('./routes/listings'));
+app.use('/api/favorites', require('./routes/favorites'));
+app.use('/api/messages', require('./routes/messages'));
+app.use('/api/ai', require('./routes/ai'));
+app.use('/api/admin', require('./routes/admin'));
+app.use('/api/seller', require('./routes/seller'));
+app.use('/api/notifications', require('./routes/notifications'));
+app.use('/api/storage', require('./routes/storage'));
 
-// ── 404 & error ───────────────────────────────────────────────────────────────
 app.use((req, res) => res.status(404).json({ success: false, error: `Route not found: ${req.method} ${req.path}` }));
-app.use((err, req, res, next) => { console.error(err.stack); res.status(err.status || 500).json({ success: false, error: err.message || 'Internal server error' }); });
+app.use((err, req, res, next) => { console.error(err.stack); res.status(500).json({ success: false, error: err.message }); });
 
-// ── Start ─────────────────────────────────────────────────────────────────────
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🛒 Sokoni Kenya API v2.0.0 on port ${PORT}`);
-  // Keep-alive ping to prevent Render sleep
+  console.log(`Sokoni Kenya API on port ${PORT}`);
   if (process.env.NODE_ENV === 'production') {
     const base = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;
     setInterval(() => {
       const url = new URL('/api/health', base);
       const lib = url.protocol === 'https:' ? require('https') : require('http');
-      lib.get(url.toString(), r => console.log(`Keep-alive: ${r.statusCode}`)).on('error', e => console.log('Keep-alive err:', e.message));
+      lib.get(url.toString(), r => console.log(`Keep-alive: ${r.statusCode}`)).on('error', () => {});
     }, 14 * 60 * 1000);
   }
 });
