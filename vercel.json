@@ -1,6 +1,6 @@
 {
-  "buildCommand": "cd marketplace-kenya && npm run build",
-  "outputDirectory": "marketplace-kenya/.next",
-  "installCommand": "cd marketplace-kenya && npm install",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
   "framework": "nextjs"
 }
