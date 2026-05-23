@@ -140,7 +140,7 @@ function ListingsContent() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f5f5f5]">
-      <Navbar showSearch onSearch={q => setSearch(q)} />
+      <Navbar />
 
       <div className="container mx-auto px-3 sm:px-4 py-4 flex-1 max-w-7xl">
 
