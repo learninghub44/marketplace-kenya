@@ -193,4 +193,28 @@ router.get('/me', async (req, res) => {
   }
 });
 
+
+router.post('/clerk-sync', async (req, res) => {
+  try {
+    const { clerk_id, email, name, avatar_url, phone, role: requestedRole } = req.body;
+    if (!clerk_id || !email) return res.status(400).json({ success: false, error: 'clerk_id and email required' });
+    let { data: user } = await supabaseAdmin.from('users').select('*').eq('clerk_id', clerk_id).maybeSingle();
+    if (!user) {
+      const { data: byEmail } = await supabaseAdmin.from('users').select('*').eq('email', email).maybeSingle();
+      if (byEmail) { await supabaseAdmin.from('users').update({ clerk_id, avatar_url }).eq('id', byEmail.id); user = { ...byEmail, clerk_id }; }
+    }
+    if (!user) {
+      if (!requestedRole) return res.json({ success: false, needs_onboarding: true });
+      const role = ["buyer","seller"].includes(requestedRole) ? requestedRole : "buyer";
+      const { data: newUser, error } = await supabaseAdmin.from("users").insert({ clerk_id, email, name: name || email.split("@")[0], avatar_url, phone: phone || null, role }).select().single();
+      if (error) return res.status(500).json({ success: false, error: error.message });
+      user = newUser;
+      if (role === "buyer") supabaseAdmin.from("buyers").insert({ id: user.id }).catch(() => {});
+      if (role === "seller") supabaseAdmin.from("sellers").insert({ id: user.id, kyc_status: "not_started" }).catch(() => {});
+    }
+    const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: "7d" });
+    res.json({ success: true, token, user: { id: user.id, email: user.email, name: user.name, role: user.role, avatar_url: user.avatar_url } });
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
 module.exports = router;

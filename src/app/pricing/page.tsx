@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { SiteFooter } from '@/components/footer'
+import Footer from '@/components/footer'
 
 export default function PricingPage() {
   return (
@@ -41,7 +41,7 @@ export default function PricingPage() {
           </Card>
         </div>
       </div>
-      <SiteFooter />
+      <Footer />
     </div>
   )
 }

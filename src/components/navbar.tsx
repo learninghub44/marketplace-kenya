@@ -1,135 +1,129 @@
 "use client"
 import Link from 'next/link'
-import { useRouter, usePathname } from 'next/navigation'
-import { useState, useEffect } from 'react'
-import { ShoppingBag, Search, Moon, Sun, Menu, X, LogOut, User, MessageCircle } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { Search, Moon, Sun, Menu, X, ShoppingBag, MapPin } from 'lucide-react'
 import { useTheme } from './theme-provider'
-import { getUser, clearAuth } from '@/lib/auth'
+import { useUser, UserButton } from '@clerk/nextjs'
+import { getUser } from '@/lib/auth'
 
-interface NavbarProps {
-  onSearch?: (q: string) => void
-  showSearch?: boolean
-}
+const CATS = [
+  { label: '📱 Electronics', name: 'Electronics' },
+  { label: '👗 Fashion', name: 'Fashion' },
+  { label: '🏡 Home & Garden', name: 'Home & Garden' },
+  { label: '🚗 Vehicles', name: 'Vehicles' },
+  { label: '🌾 Agriculture', name: 'Agriculture' },
+  { label: '⚽ Sports', name: 'Sports' },
+  { label: '🍼 Baby & Kids', name: 'Baby & Kids' },
+  { label: '🏢 Property', name: 'Property' },
+  { label: '💼 Services', name: 'Services' },
+  { label: '💄 Health & Beauty', name: 'Health & Beauty' },
+]
 
-export default function Navbar({ onSearch, showSearch = false }: NavbarProps) {
+interface NavbarProps { onSearch?: (q: string) => void; showSearch?: boolean }
+
+export default function Navbar({ onSearch }: NavbarProps) {
   const { theme, toggle } = useTheme()
-  const [user, setUser] = useState<any>(null)
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchVal, setSearchVal] = useState('')
   const router = useRouter()
-  const pathname = usePathname()
+  const { isSignedIn } = useUser()
+  const localUser = getUser()
+  const dashLink = localUser
+    ? (localUser.role === 'admin' ? '/admin' : localUser.role === 'seller' ? '/seller' : '/buyer')
+    : '/sign-in'
 
-  useEffect(() => { setUser(getUser()) }, [])
-
-  const logout = () => { clearAuth(); setUser(null); router.push('/') }
-
-  const dashLink = user ? (user.role === 'admin' ? '/admin' : user.role === 'seller' ? '/seller' : '/buyer') : '/login'
+  const doSearch = () => {
+    const q = searchVal.trim()
+    if (onSearch) onSearch(q)
+    else router.push(q ? `/listings?q=${encodeURIComponent(q)}` : '/listings')
+  }
 
   return (
-    <nav className="bg-gray-900 dark:bg-gray-950 sticky top-0 z-50 shadow-lg">
-      <div className="container mx-auto px-4 py-3">
-        <div className="flex items-center gap-3">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-            <div className="bg-orange-400 p-1.5 rounded-lg">
-              <ShoppingBag className="h-5 w-5 text-gray-900" />
-            </div>
-            <div className="leading-none">
-              <span className="font-black text-white text-base tracking-tight">Sokoni</span>
-              <span className="font-black text-orange-400 text-base tracking-tight"> Kenya</span>
-            </div>
-          </Link>
+    <>
+      <div className="bg-gray-900 text-xs hidden sm:block">
+        <div className="container mx-auto px-4 max-w-7xl flex justify-between py-1.5 text-gray-400">
+          <div className="flex items-center gap-1"><MapPin className="h-3 w-3" /> Delivering across all 47 counties</div>
+          <div className="flex gap-4">
+            <a href="https://wa.me/254701059192" target="_blank" rel="noopener noreferrer" className="hover:text-orange-400">WhatsApp Support</a>
+            <Link href="/support" className="hover:text-orange-400">Help Centre</Link>
+          </div>
+        </div>
+      </div>
 
-          {/* Search */}
-          {showSearch && (
-            <div className="flex-1 flex max-w-xl">
-              <input value={searchVal}
-                onChange={e => { setSearchVal(e.target.value); onSearch?.(e.target.value) }}
-                onKeyDown={e => e.key === 'Enter' && router.push(`/listings?q=${searchVal}`)}
-                placeholder="Search products, categories..."
-                className="flex-1 px-4 py-2 text-sm text-gray-900 dark:text-white dark:bg-gray-800 rounded-l-lg focus:outline-none border-0" />
-              <button onClick={() => router.push(`/listings?q=${searchVal}`)}
-                className="bg-orange-400 hover:bg-orange-500 px-4 py-2 rounded-r-lg transition-colors">
-                <Search className="h-4 w-4 text-gray-900" />
+      <nav className="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-40 border-b border-gray-100 dark:border-gray-800">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <div className="flex items-center gap-3 h-14">
+            <Link href="/" className="flex-shrink-0 flex items-center gap-1.5">
+              <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                <ShoppingBag className="h-4 w-4 text-white" />
+              </div>
+              <span className="font-black text-gray-900 dark:text-white text-lg hidden sm:block">Sokoni<span className="text-orange-500">Kenya</span></span>
+            </Link>
+
+            <div className="flex-1 flex gap-1.5 max-w-2xl">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+                <input type="text" value={searchVal} onChange={e => setSearchVal(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && doSearch()}
+                  placeholder="Search products, brands…"
+                  className="w-full pl-9 pr-4 py-2 border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-400" />
+              </div>
+              <button onClick={doSearch} className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-sm font-semibold flex-shrink-0">Search</button>
+            </div>
+
+            <div className="flex items-center gap-2 ml-auto flex-shrink-0">
+              <button onClick={toggle} className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400">
+                {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              </button>
+              {isSignedIn ? (
+                <>
+                  <Link href={dashLink} className="hidden sm:block text-xs font-semibold text-orange-500 border border-orange-200 px-3 py-1.5 rounded-lg hover:bg-orange-50">Dashboard</Link>
+                  <UserButton />
+                </>
+              ) : (
+                <>
+                  <Link href="/sign-in" className="hidden sm:block text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-orange-500 px-3 py-1.5">Sign In</Link>
+                  <Link href="/sign-up" className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold px-4 py-2 rounded-xl hidden sm:block">Register</Link>
+                </>
+              )}
+              <button onClick={() => setMenuOpen(!menuOpen)} className="p-2 rounded-lg text-gray-600 dark:text-gray-300 sm:hidden">
+                {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
             </div>
-          )}
-          {!showSearch && <div className="flex-1" />}
-
-          {/* Desktop Actions */}
-          <div className="hidden sm:flex items-center gap-2">
-            <Link href="/listings" className={`text-sm px-3 py-1.5 rounded-lg transition-colors ${pathname === '/listings' ? 'text-orange-400' : 'text-gray-300 hover:text-white hover:bg-gray-800'}`}>Browse</Link>
-            <Link href="/support" className={`text-sm px-3 py-1.5 rounded-lg transition-colors ${pathname === '/support' ? 'text-orange-400' : 'text-gray-300 hover:text-white hover:bg-gray-800'}`}>Support</Link>
-            <button onClick={toggle} className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors" title="Toggle dark mode">
-              {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </button>
-            {user ? (
-              <div className="flex items-center gap-2">
-                <Link href={dashLink} className="flex items-center gap-1.5 text-sm text-gray-300 hover:text-white px-3 py-1.5 hover:bg-gray-800 rounded-lg transition-colors">
-                  <User className="h-4 w-4" />{user.name || user.email?.split('@')[0]}
-                </Link>
-                <button onClick={logout} className="p-2 text-gray-400 hover:text-red-400 hover:bg-gray-800 rounded-lg transition-colors"><LogOut className="h-4 w-4" /></button>
-              </div>
-            ) : (
-              <>
-                <Link href="/login" className="text-sm text-gray-300 hover:text-white px-3 py-1.5 hover:bg-gray-800 rounded-lg transition-colors">Login</Link>
-                <Link href="/register" className="bg-orange-400 hover:bg-orange-500 text-gray-900 font-bold px-4 py-1.5 rounded-lg text-sm transition-colors">Sign Up</Link>
-              </>
-            )}
-          </div>
-
-          {/* Mobile */}
-          <div className="flex sm:hidden items-center gap-2">
-            <button onClick={toggle} className="p-2 text-gray-400 hover:text-white">
-              {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </button>
-            <button onClick={() => setMenuOpen(!menuOpen)} className="p-2 text-gray-400 hover:text-white">
-              {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        <div className="hidden md:block border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
+          <div className="container mx-auto px-4 max-w-7xl overflow-x-auto scrollbar-hide">
+            <div className="flex w-max">
+              {CATS.map(c => (
+                <Link key={c.name} href={`/listings?category=${encodeURIComponent(c.name)}`}
+                  className="flex-shrink-0 px-4 py-2.5 text-xs font-semibold text-gray-600 dark:text-gray-300 hover:text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 whitespace-nowrap">
+                  {c.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {menuOpen && (
-          <div className="sm:hidden mt-3 pt-3 border-t border-gray-800 space-y-1 pb-2">
-            {!showSearch && (
-              <div className="flex mb-3">
-                <input value={searchVal} onChange={e => setSearchVal(e.target.value)}
-                  placeholder="Search..." className="flex-1 px-3 py-2 text-sm text-gray-900 rounded-l-lg focus:outline-none" />
-                <button onClick={() => { router.push(`/listings?q=${searchVal}`); setMenuOpen(false) }} className="bg-orange-400 px-3 py-2 rounded-r-lg"><Search className="h-4 w-4 text-gray-900" /></button>
-              </div>
-            )}
-            <Link href="/listings" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 text-gray-300 hover:text-white px-3 py-2 rounded-lg hover:bg-gray-800">Browse Listings</Link>
-            <Link href="/support" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 text-gray-300 hover:text-white px-3 py-2 rounded-lg hover:bg-gray-800">Support Center</Link>
-            {user ? (
-              <>
-                <Link href={dashLink} onClick={() => setMenuOpen(false)} className="flex items-center gap-2 text-orange-400 px-3 py-2 rounded-lg hover:bg-gray-800"><User className="h-4 w-4" />My Dashboard</Link>
-                <button onClick={() => { logout(); setMenuOpen(false) }} className="flex items-center gap-2 text-red-400 px-3 py-2 rounded-lg hover:bg-gray-800 w-full"><LogOut className="h-4 w-4" />Logout</button>
-              </>
-            ) : (
-              <>
-                <Link href="/login" onClick={() => setMenuOpen(false)} className="block text-gray-300 hover:text-white px-3 py-2 rounded-lg hover:bg-gray-800">Login</Link>
-                <Link href="/register" onClick={() => setMenuOpen(false)} className="block bg-orange-400 text-gray-900 font-bold px-3 py-2 rounded-lg text-center">Create Free Account</Link>
-              </>
-            )}
+          <div className="sm:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 space-y-2">
+            {isSignedIn
+              ? <Link href={dashLink} onClick={() => setMenuOpen(false)} className="block py-2 font-semibold text-orange-500">Dashboard</Link>
+              : <><Link href="/sign-in" onClick={() => setMenuOpen(false)} className="block py-2 font-semibold text-gray-700 dark:text-gray-300">Sign In</Link>
+                <Link href="/sign-up" onClick={() => setMenuOpen(false)} className="block py-2 font-semibold text-orange-500">Register Free</Link></>
+            }
+            <div className="border-t border-gray-100 dark:border-gray-800 pt-2 space-y-1">
+              {CATS.map(c => (
+                <Link key={c.name} href={`/listings?category=${encodeURIComponent(c.name)}`}
+                  onClick={() => setMenuOpen(false)}
+                  className="block py-1.5 text-sm text-gray-600 dark:text-gray-300 hover:text-orange-500">{c.label}</Link>
+              ))}
+            </div>
           </div>
         )}
-      </div>
-
-      {/* Category strip */}
-      <div className="bg-gray-800 dark:bg-gray-900 border-t border-gray-700 overflow-x-auto">
-        <div className="container mx-auto px-4 flex gap-0.5 py-1">
-          {['📱 Electronics','👗 Fashion','🏡 Home & Garden','🚗 Vehicles','🌾 Agriculture','⚽ Sports','🧸 Baby & Kids','🏢 Property','💼 Services'].map(c => {
-            const name = c.split(' ').slice(1).join(' ')
-            return (
-              <Link key={c} href={`/listings?category=${encodeURIComponent(name)}`}
-                className="whitespace-nowrap text-xs px-3 py-1.5 text-gray-400 hover:text-white hover:bg-gray-700 rounded transition-colors">
-                {c}
-              </Link>
-            )
-          })}
-        </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   )
 }
