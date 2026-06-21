@@ -1,11 +1,7 @@
 name = "marketplace-kenya"
-main = ".open-next/worker.js"
 compatibility_date = "2025-09-23"
 compatibility_flags = ["nodejs_compat"]
-
-[assets]
-directory = ".open-next/assets"
-binding = "ASSETS"
+pages_build_output_dir = ".open-next/assets"
 
 [vars]
 NEXT_PUBLIC_API_URL = "https://marketplace-kenya-1.onrender.com"

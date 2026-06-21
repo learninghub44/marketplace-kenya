@@ -4,12 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npx @opennextjs/cloudflare build",
+    "build": "bash scripts/build-for-pages.sh",
     "start": "next start",
     "lint": "next lint",
     "build:next": "next build",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
+    "pages:dev": "npm run build && wrangler pages dev .open-next/assets --compatibility-date=2025-09-23 --compatibility-flags=nodejs_compat"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.4.1",
