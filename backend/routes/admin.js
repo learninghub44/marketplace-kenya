@@ -65,7 +65,7 @@ router.get('/listings', ...adminAuth, async (req, res) => {
   try {
     const { status } = req.query;
     let q = supabaseAdmin.from('listings')
-      .select('id,title,price,category,location,status,created_at,seller_id,description')
+      .select('id,title,price,category,location,status,created_at,seller_id,description,ai_flagged,ai_flag_reason,ai_fraud_score,ai_fraud_reasons')
       .order('created_at', { ascending: false });
     if (status) q = q.eq('status', status);
     const { data: listings, error } = await q;

@@ -5,27 +5,32 @@ const {
   generateListingGemini,
   moderateContentOpenAI,
   moderateContentGemini,
-  generateSmartSearchOpenAI,
-  generateSmartSearchGemini,
-  detectFraudOpenAI,
-  detectFraudGemini,
 } = require('../lib/openai');
+const {
+  generateListingGroq,
+  moderateContentGroq,
+  smartSearchGroq,
+  detectFraudGroq,
+} = require('../lib/groq');
 const { authenticate } = require('../middleware/auth');
 
-// Generate listing
+// Generate listing — Groq by default, with OpenAI/Gemini as fallback providers
 router.post('/generate-listing', authenticate, async (req, res) => {
   try {
-    const { productName, category, provider = 'openai' } = req.body;
+    const { productName, category, provider = 'groq' } = req.body;
 
     if (!productName || !category) {
       return res.status(400).json({ success: false, error: 'Product name and category required' });
     }
 
     let result;
-    if (provider === 'gemini') {
+    try {
+      if (provider === 'gemini') result = await generateListingGemini(productName, category);
+      else if (provider === 'openai') result = await generateListingOpenAI(productName, category);
+      else result = await generateListingGroq(productName, category);
+    } catch (err) {
+      // Groq/primary failed — fall back to Gemini if configured
       result = await generateListingGemini(productName, category);
-    } else {
-      result = await generateListingOpenAI(productName, category);
     }
 
     res.json({ success: true, data: result });
@@ -34,21 +39,19 @@ router.post('/generate-listing', authenticate, async (req, res) => {
   }
 });
 
-// Moderate content
+// Moderate content — Groq by default
 router.post('/moderate', authenticate, async (req, res) => {
   try {
-    const { content, provider = 'openai' } = req.body;
+    const { content, provider = 'groq' } = req.body;
 
     if (!content) {
       return res.status(400).json({ success: false, error: 'Content required' });
     }
 
     let result;
-    if (provider === 'gemini') {
-      result = await moderateContentGemini(content);
-    } else {
-      result = await moderateContentOpenAI(content);
-    }
+    if (provider === 'gemini') result = await moderateContentGemini(content);
+    else if (provider === 'openai') result = await moderateContentOpenAI(content);
+    else result = await moderateContentGroq(content);
 
     res.json({ success: true, data: result });
   } catch (error) {
@@ -56,44 +59,32 @@ router.post('/moderate', authenticate, async (req, res) => {
   }
 });
 
-// Smart search
-router.post('/smart-search', authenticate, async (req, res) => {
+// Smart search — public (no auth) so anonymous buyers get AI-assisted search too
+router.post('/smart-search', async (req, res) => {
   try {
-    const { query, provider = 'openai' } = req.body;
+    const { query } = req.body;
 
-    if (!query) {
+    if (!query || !query.trim()) {
       return res.status(400).json({ success: false, error: 'Query required' });
     }
 
-    let result;
-    if (provider === 'gemini') {
-      result = await generateSmartSearchGemini(query);
-    } else {
-      result = await generateSmartSearchOpenAI(query);
-    }
-
+    const result = await smartSearchGroq(query);
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
-// Fraud detection
+// Fraud detection — Groq only (admin/internal use)
 router.post('/detect-fraud', authenticate, async (req, res) => {
   try {
-    const { listingData, provider = 'openai' } = req.body;
+    const { listingData } = req.body;
 
     if (!listingData) {
       return res.status(400).json({ success: false, error: 'Listing data required' });
     }
 
-    let result;
-    if (provider === 'gemini') {
-      result = await detectFraudGemini(listingData);
-    } else {
-      result = await detectFraudOpenAI(listingData);
-    }
-
+    const result = await detectFraudGroq(listingData);
     res.json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });

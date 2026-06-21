@@ -122,7 +122,7 @@ export const api = {
   },
 
   // AI
-  generateListing: async (productName: string, category: string, provider: string = 'openai', token: string) => {
+  generateListing: async (productName: string, category: string, provider: string = 'groq', token: string) => {
     const response = await fetch(`${API_BASE_URL}/api/ai/generate-listing`, {
       method: 'POST',
       headers: {
@@ -134,7 +134,7 @@ export const api = {
     return response.json();
   },
 
-  moderateContent: async (content: string, provider: string = 'openai', token: string) => {
+  moderateContent: async (content: string, provider: string = 'groq', token: string) => {
     const response = await fetch(`${API_BASE_URL}/api/ai/moderate`, {
       method: 'POST',
       headers: {
@@ -146,19 +146,16 @@ export const api = {
     return response.json();
   },
 
-  smartSearch: async (query: string, provider: string = 'openai', token: string) => {
+  smartSearch: async (query: string) => {
     const response = await fetch(`${API_BASE_URL}/api/ai/smart-search`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ query, provider }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query }),
     });
     return response.json();
   },
 
-  detectFraud: async (listingData: any, provider: string = 'openai', token: string) => {
+  detectFraud: async (listingData: any, provider: string = 'groq', token: string) => {
     const response = await fetch(`${API_BASE_URL}/api/ai/detect-fraud`, {
       method: 'POST',
       headers: {

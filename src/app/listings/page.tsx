@@ -38,10 +38,32 @@ function ListingsContent() {
   const fetchListings = async (pg: number, reset: boolean) => {
     setLoading(true)
     try {
+      let q = search
+      let cat = category
+      let loc = location
+
+      // If the buyer typed a free-text search and hasn't manually narrowed by category/location,
+      // let AI parse the query for intent (e.g. "cheap phone in Kisumu" -> query + filters).
+      if (search && category === 'All' && location === 'All Locations') {
+        try {
+          const aiRes = await fetch(`${API_BASE}/api/ai/smart-search`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: search }),
+          })
+          const aiData = await aiRes.json()
+          if (aiData.success) {
+            q = aiData.data.refinedQuery || search
+            if (aiData.data.filters?.category) cat = aiData.data.filters.category
+            if (aiData.data.filters?.location) loc = aiData.data.filters.location
+          }
+        } catch (e) { /* AI search is a nice-to-have — fall back to plain search silently */ }
+      }
+
       const params = new URLSearchParams({ status: 'active', limit: String(PER_PAGE), offset: String((pg-1)*PER_PAGE) })
-      if (search) params.set('search', search)
-      if (category !== 'All') params.set('category', category)
-      if (location !== 'All Locations') params.set('location', location)
+      if (q) params.set('search', q)
+      if (cat !== 'All') params.set('category', cat)
+      if (loc !== 'All Locations') params.set('location', loc)
       if (sort) params.set('sort', sort)
       const res = await fetch(`${API_BASE}/api/listings?${params}`)
       const data = await res.json()

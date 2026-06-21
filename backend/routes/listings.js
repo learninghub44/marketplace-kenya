@@ -2,6 +2,33 @@ const express = require('express');
 const router = express.Router();
 const { supabaseAdmin } = require('../config/supabase');
 const { authenticate, authorize } = require('../middleware/auth');
+const { moderateContentGroq, detectFraudGroq } = require('../lib/groq');
+
+// Run AI moderation + fraud checks on a listing. Never throws — returns safe defaults on failure
+// so a flaky AI provider can never block someone from listing a product.
+const runAiChecks = async ({ title, description, price, category }) => {
+  try {
+    const [moderation, fraud] = await Promise.all([
+      moderateContentGroq(`${title}\n\n${description}`),
+      detectFraudGroq({ title, description, price, category }),
+    ]);
+    return {
+      ai_flagged: !!moderation.flagged,
+      ai_flag_reason: moderation.reason || null,
+      ai_fraud_score: typeof fraud.confidence === 'number' ? fraud.confidence : 0,
+      ai_fraud_reasons: fraud.reasons || [],
+      ai_checked_at: new Date().toISOString(),
+    };
+  } catch (e) {
+    return {
+      ai_flagged: false,
+      ai_flag_reason: null,
+      ai_fraud_score: 0,
+      ai_fraud_reasons: [],
+      ai_checked_at: new Date().toISOString(),
+    };
+  }
+};
 
 // GET all listings (public)
 router.get('/', async (req, res) => {
@@ -64,6 +91,8 @@ router.post('/', authenticate, authorize('seller'), async (req, res) => {
     if (!title || !description || !price || !category || !location)
       return res.status(400).json({ success: false, error: 'Title, description, price, category and location are required' });
 
+    const aiChecks = await runAiChecks({ title, description, price: parseFloat(price), category });
+
     const { data: listing, error } = await supabaseAdmin
       .from('listings')
       .insert({
@@ -73,6 +102,7 @@ router.post('/', authenticate, authorize('seller'), async (req, res) => {
         price: parseFloat(price),
         category, location, images,
         status: 'pending',
+        ...aiChecks,
       })
       .select().single();
     if (error) throw error;
@@ -91,8 +121,9 @@ router.put('/:id', authenticate, authorize('seller'), async (req, res) => {
       return res.status(403).json({ success: false, error: 'Not your listing' });
 
     const { title, description, price, category, location, images } = req.body;
+    const aiChecks = await runAiChecks({ title, description, price: parseFloat(price), category });
     const { data: listing, error } = await supabaseAdmin
-      .from('listings').update({ title, description, price: parseFloat(price), category, location, images, status: 'pending' })
+      .from('listings').update({ title, description, price: parseFloat(price), category, location, images, status: 'pending', ...aiChecks })
       .eq('id', req.params.id).select().single();
     if (error) throw error;
     res.json({ success: true, listing });

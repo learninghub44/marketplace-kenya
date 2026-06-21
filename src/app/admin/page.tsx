@@ -137,13 +137,27 @@ export default function AdminDashboard() {
               {tab === 'pending' && (
                 <div className="space-y-3">
                   {pendingListings.length === 0 ? <div className="text-center py-12 text-gray-400">✅ No pending listings</div> :
-                    pendingListings.map(listing => (
-                      <div key={listing.id} className="border border-gray-200 rounded-xl p-4">
+                    [...pendingListings].sort((a, b) => (b.ai_flagged === a.ai_flagged ? (b.ai_fraud_score || 0) - (a.ai_fraud_score || 0) : (b.ai_flagged ? 1 : 0) - (a.ai_flagged ? 1 : 0))).map(listing => (
+                      <div key={listing.id} className={`border rounded-xl p-4 ${listing.ai_flagged || listing.ai_fraud_score >= 0.5 ? 'border-red-300 bg-red-50' : 'border-gray-200'}`}>
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-bold text-gray-900">{listing.title}</h3>
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h3 className="font-bold text-gray-900">{listing.title}</h3>
+                              {listing.ai_flagged && (
+                                <span className="flex items-center gap-1 text-xs font-semibold bg-red-100 text-red-700 px-2 py-0.5 rounded-full">
+                                  <AlertTriangle className="h-3 w-3" />Flagged by AI
+                                </span>
+                              )}
+                              {listing.ai_fraud_score >= 0.5 && (
+                                <span className="flex items-center gap-1 text-xs font-semibold bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full">
+                                  <AlertTriangle className="h-3 w-3" />Fraud risk {Math.round(listing.ai_fraud_score * 100)}%
+                                </span>
+                              )}
+                            </div>
                             <p className="text-sm text-gray-500 mt-0.5">{listing.category} · KES {listing.price?.toLocaleString()} · {listing.location}</p>
                             <p className="text-sm text-gray-600 mt-2 line-clamp-2">{listing.description}</p>
+                            {listing.ai_flag_reason && <p className="text-xs text-red-600 mt-1">AI: {listing.ai_flag_reason}</p>}
+                            {listing.ai_fraud_reasons?.length > 0 && <p className="text-xs text-yellow-700 mt-0.5">Risk factors: {listing.ai_fraud_reasons.join(', ')}</p>}
                             <p className="text-xs text-gray-400 mt-1">{new Date(listing.created_at).toLocaleDateString('en-KE', { dateStyle:'medium' })}</p>
                           </div>
                         </div>
