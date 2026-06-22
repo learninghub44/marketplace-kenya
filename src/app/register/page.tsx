@@ -61,7 +61,7 @@ export default function RegisterPage() {
                 {['buyer','seller'].map(r => (
                   <button key={r} type="button" onClick={() => setForm({...form, role:r})}
                     className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-colors ${form.role===r ? 'bg-orange-400 text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>
-                    {r === 'buyer' ? '🛒 I want to Buy' : '🏪 I want to Sell'}
+                    {r === 'buyer' ? ' I want to Buy' : ' I want to Sell'}
                   </button>
                 ))}
               </div>

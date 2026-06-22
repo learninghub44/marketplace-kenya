@@ -126,17 +126,17 @@ export default function CreateListingPage() {
                   <label className="text-sm font-semibold text-gray-700">Description *</label>
                   <button type="button" onClick={generateWithAI} disabled={aiLoading}
                     className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors ${aiUsed ? 'bg-green-100 text-green-700' : 'bg-purple-100 hover:bg-purple-200 text-purple-700'}`}>
-                    {aiLoading ? <><Loader2 className="h-3 w-3 animate-spin"/>Generating...</> : <><Sparkles className="h-3 w-3"/>{aiUsed ? '✓ AI Generated' : 'Generate with AI'}</>}
+                    {aiLoading ? <><Loader2 className="h-3 w-3 animate-spin"/>Generating...</> : <><Sparkles className="h-3 w-3"/>{aiUsed ? ' AI Generated' : 'Generate with AI'}</>}
                   </button>
                 </div>
                 <textarea value={form.description} onChange={e=>setForm({...form,description:e.target.value})} required rows={6}
                   className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 resize-none"
                   placeholder="Describe your product in detail — condition, features, why someone should buy it..." />
-                {aiUsed && <p className="text-xs text-green-600 mt-1">✨ AI-generated description — review and edit as needed</p>}
+                {aiUsed && <p className="text-xs text-green-600 mt-1"> AI-generated description — review and edit as needed</p>}
               </div>
 
               <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 text-sm text-blue-700">
-                <p className="font-semibold">📸 Image upload coming soon</p>
+                <p className="font-semibold"> Image upload coming soon</p>
                 <p className="mt-1 text-blue-500">For now, you can add image URLs or our team will contact you. WhatsApp images to <strong>0742 791 838</strong>.</p>
               </div>
 

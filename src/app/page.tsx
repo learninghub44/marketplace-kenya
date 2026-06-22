@@ -4,14 +4,14 @@ import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 
 const categories = [
-  { name: 'Electronics', emoji: '📱', image: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&q=80', count: '2,400+' },
-  { name: 'Fashion', emoji: '👗', image: 'https://images.unsplash.com/photo-1558171813-c57e21d86b46?w=400&q=80', count: '5,100+' },
-  { name: 'Home & Garden', emoji: '🏡', image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80', count: '1,800+' },
-  { name: 'Vehicles', emoji: '🚗', image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=400&q=80', count: '900+' },
-  { name: 'Property', emoji: '🏢', image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&q=80', count: '650+' },
-  { name: 'Agriculture', emoji: '🌾', image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=400&q=80', count: '1,200+' },
-  { name: 'Sports', emoji: '⚽', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400&q=80', count: '430+' },
-  { name: 'Services', emoji: '💼', image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=80', count: '320+' },
+  { name: 'Electronics', emoji: '', image: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&q=80', count: '2,400+' },
+  { name: 'Fashion', emoji: '', image: 'https://images.unsplash.com/photo-1558171813-c57e21d86b46?w=400&q=80', count: '5,100+' },
+  { name: 'Home & Garden', emoji: '', image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80', count: '1,800+' },
+  { name: 'Vehicles', emoji: '', image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=400&q=80', count: '900+' },
+  { name: 'Property', emoji: '', image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&q=80', count: '650+' },
+  { name: 'Agriculture', emoji: '', image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=400&q=80', count: '1,200+' },
+  { name: 'Sports', emoji: '', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400&q=80', count: '430+' },
+  { name: 'Services', emoji: '', image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=80', count: '320+' },
 ]
 
 const benefits = [
@@ -41,7 +41,7 @@ export default function Home() {
         <div className="relative container mx-auto px-4 py-14 lg:py-20 flex flex-col lg:flex-row items-center gap-10">
           <div className="text-white space-y-5 max-w-xl">
             <div className="inline-flex items-center gap-2 bg-orange-400/20 border border-orange-400/40 rounded-full px-4 py-1.5 text-orange-300 text-sm font-medium">
-              🇰🇪 Kenya&apos;s Trusted Local Marketplace
+               Kenya&apos;s Trusted Local Marketplace
             </div>
             <h1 className="text-4xl lg:text-6xl font-black leading-tight">
               Buy &amp; Sell on<br /><span className="text-orange-400">Sokoni Kenya</span>
@@ -56,7 +56,7 @@ export default function Home() {
               </Link>
             </div>
             <div className="flex flex-wrap gap-4 text-sm text-gray-300 pt-1">
-              <span>✅ Free listings</span><span>✅ M-Pesa</span><span>✅ 47 counties</span><span>✅ Admin verified</span>
+              <span> Free listings</span><span> M-Pesa</span><span> 47 counties</span><span> Admin verified</span>
             </div>
           </div>
           <div className="hidden lg:grid grid-cols-2 gap-3 w-72 flex-shrink-0">

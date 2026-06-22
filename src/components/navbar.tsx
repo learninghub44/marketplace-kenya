@@ -1,23 +1,22 @@
 "use client"
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { Search, Moon, Sun, Menu, X, ShoppingBag, MapPin } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Search, Moon, Sun, Menu, X, ShoppingBag, MapPin, LogOut, LayoutDashboard } from 'lucide-react'
 import { useTheme } from './theme-provider'
-import { useUser, UserButton } from '@clerk/nextjs'
-import { getUser } from '@/lib/auth'
+import { getUser, clearAuth } from '@/lib/auth'
 
 const CATS = [
-  { label: '📱 Electronics', name: 'Electronics' },
-  { label: '👗 Fashion', name: 'Fashion' },
-  { label: '🏡 Home & Garden', name: 'Home & Garden' },
-  { label: '🚗 Vehicles', name: 'Vehicles' },
-  { label: '🌾 Agriculture', name: 'Agriculture' },
-  { label: '⚽ Sports', name: 'Sports' },
-  { label: '🍼 Baby & Kids', name: 'Baby & Kids' },
-  { label: '🏢 Property', name: 'Property' },
-  { label: '💼 Services', name: 'Services' },
-  { label: '💄 Health & Beauty', name: 'Health & Beauty' },
+  { label: 'Electronics', name: 'Electronics' },
+  { label: 'Fashion', name: 'Fashion' },
+  { label: 'Home & Garden', name: 'Home & Garden' },
+  { label: 'Vehicles', name: 'Vehicles' },
+  { label: 'Agriculture', name: 'Agriculture' },
+  { label: 'Sports', name: 'Sports' },
+  { label: 'Baby & Kids', name: 'Baby & Kids' },
+  { label: 'Property', name: 'Property' },
+  { label: 'Services', name: 'Services' },
+  { label: 'Health & Beauty', name: 'Health & Beauty' },
 ]
 
 interface NavbarProps { onSearch?: (q: string) => void; showSearch?: boolean }
@@ -26,18 +25,22 @@ export default function Navbar({ onSearch }: NavbarProps) {
   const { theme, toggle } = useTheme()
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchVal, setSearchVal] = useState('')
+  const [user, setUser] = useState<any>(null)
   const router = useRouter()
-  const { isSignedIn } = useUser()
-  const localUser = getUser()
-  const dashLink = localUser
-    ? (localUser.role === 'admin' ? '/admin' : localUser.role === 'seller' ? '/seller' : '/buyer')
-    : '/sign-in'
+
+  useEffect(() => { setUser(getUser()) }, [])
+
+  const dashLink = user
+    ? (user.role === 'admin' ? '/admin' : user.role === 'seller' ? '/seller' : '/buyer')
+    : '/login'
 
   const doSearch = () => {
     const q = searchVal.trim()
     if (onSearch) onSearch(q)
     else router.push(q ? `/listings?q=${encodeURIComponent(q)}` : '/listings')
   }
+
+  const logout = () => { clearAuth(); setUser(null); router.push('/login') }
 
   return (
     <>
@@ -76,15 +79,19 @@ export default function Navbar({ onSearch }: NavbarProps) {
               <button onClick={toggle} className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400">
                 {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </button>
-              {isSignedIn ? (
+              {user ? (
                 <>
-                  <Link href={dashLink} className="hidden sm:block text-xs font-semibold text-orange-500 border border-orange-200 px-3 py-1.5 rounded-lg hover:bg-orange-50">Dashboard</Link>
-                  <UserButton />
+                  <Link href={dashLink} className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-orange-500 border border-orange-200 px-3 py-1.5 rounded-lg hover:bg-orange-50">
+                    <LayoutDashboard className="h-3.5 w-3.5" />Dashboard
+                  </Link>
+                  <button onClick={logout} className="hidden sm:flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-800 dark:text-gray-400 px-3 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <LogOut className="h-3.5 w-3.5" />Sign Out
+                  </button>
                 </>
               ) : (
                 <>
-                  <Link href="/sign-in" className="hidden sm:block text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-orange-500 px-3 py-1.5">Sign In</Link>
-                  <Link href="/sign-up" className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold px-4 py-2 rounded-xl hidden sm:block">Register</Link>
+                  <Link href="/login" className="hidden sm:block text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-orange-500 px-3 py-1.5">Sign In</Link>
+                  <Link href="/register" className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold px-4 py-2 rounded-xl hidden sm:block">Register</Link>
                 </>
               )}
               <button onClick={() => setMenuOpen(!menuOpen)} className="p-2 rounded-lg text-gray-600 dark:text-gray-300 sm:hidden">
@@ -109,11 +116,17 @@ export default function Navbar({ onSearch }: NavbarProps) {
 
         {menuOpen && (
           <div className="sm:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 space-y-2">
-            {isSignedIn
-              ? <Link href={dashLink} onClick={() => setMenuOpen(false)} className="block py-2 font-semibold text-orange-500">Dashboard</Link>
-              : <><Link href="/sign-in" onClick={() => setMenuOpen(false)} className="block py-2 font-semibold text-gray-700 dark:text-gray-300">Sign In</Link>
-                <Link href="/sign-up" onClick={() => setMenuOpen(false)} className="block py-2 font-semibold text-orange-500">Register Free</Link></>
-            }
+            {user ? (
+              <>
+                <Link href={dashLink} onClick={() => setMenuOpen(false)} className="block py-2 font-semibold text-orange-500">Dashboard</Link>
+                <button onClick={() => { logout(); setMenuOpen(false) }} className="block py-2 text-sm text-gray-500 w-full text-left">Sign Out</button>
+              </>
+            ) : (
+              <>
+                <Link href="/login" onClick={() => setMenuOpen(false)} className="block py-2 font-semibold text-gray-700 dark:text-gray-300">Sign In</Link>
+                <Link href="/register" onClick={() => setMenuOpen(false)} className="block py-2 font-semibold text-orange-500">Register Free</Link>
+              </>
+            )}
             <div className="border-t border-gray-100 dark:border-gray-800 pt-2 space-y-1">
               {CATS.map(c => (
                 <Link key={c.name} href={`/listings?category=${encodeURIComponent(c.name)}`}

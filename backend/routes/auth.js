@@ -9,7 +9,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 
-// ─── Seed admin on first run ───────────────────────────────────────────────
+//  Seed admin on first run 
 const ensureAdmin = async () => {
   try {
     const adminEmail = 'chrisotieno026@gmail.com';
@@ -22,13 +22,13 @@ const ensureAdmin = async () => {
         .insert({ email: adminEmail, password_hash, role: 'admin', phone: '+254701059192' })
         .select().single();
       if (error) console.error('Admin seed error:', error.message);
-      else console.log('✅ Admin created:', adminEmail);
-    } else { console.log('✅ Admin already exists'); }
+      else console.log(' Admin created:', adminEmail);
+    } else { console.log(' Admin already exists'); }
   } catch(e) { console.error('Admin seed failed:', e.message); }
 };
 ensureAdmin();
 
-// ─── Register ──────────────────────────────────────────────────────────────
+//  Register 
 router.post('/register', async (req, res) => {
   try {
     const { email, password, role, phone, name } = req.body;
@@ -42,22 +42,22 @@ router.post('/register', async (req, res) => {
       await resend.emails.send({
         from: 'Sokoni Kenya <noreply@kenyamarketplace.co.ke>',
         to: email,
-        subject: '🎉 Welcome to Sokoni Kenya!',
+        subject: ' Welcome to Sokoni Kenya!',
         html: `
           <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb">
             <div style="background:linear-gradient(135deg,#1f2937,#374151);padding:32px;text-align:center">
-              <h1 style="color:#f97316;margin:0;font-size:28px">🛒 Sokoni Kenya</h1>
+              <h1 style="color:#f97316;margin:0;font-size:28px"> Sokoni Kenya</h1>
               <p style="color:#9ca3af;margin:8px 0 0">Kenya's trusted local marketplace</p>
             </div>
             <div style="padding:32px">
-              <h2 style="color:#1f2937">Welcome, ${name || email.split('@')[0]}! 🎉</h2>
+              <h2 style="color:#1f2937">Welcome, ${name || email.split('@')[0]}! </h2>
               <p style="color:#6b7280">Your account has been created successfully as a <strong>${role}</strong>.</p>
               <div style="background:#f9fafb;border-radius:8px;padding:16px;margin:24px 0">
-                <p style="margin:0;color:#374151">📧 Email: <strong>${email}</strong></p>
-                <p style="margin:8px 0 0;color:#374151">👤 Role: <strong>${role.charAt(0).toUpperCase()+role.slice(1)}</strong></p>
+                <p style="margin:0;color:#374151"> Email: <strong>${email}</strong></p>
+                <p style="margin:8px 0 0;color:#374151"> Role: <strong>${role.charAt(0).toUpperCase()+role.slice(1)}</strong></p>
               </div>
               <a href="${FRONTEND_URL}/login" style="display:inline-block;background:#f97316;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold">Start ${role === 'seller' ? 'Selling' : 'Shopping'} →</a>
-              <p style="color:#9ca3af;font-size:12px;margin-top:32px">Sokoni Kenya · Free for everyone 🇰🇪</p>
+              <p style="color:#9ca3af;font-size:12px;margin-top:32px">Sokoni Kenya · Free for everyone </p>
             </div>
           </div>`,
       });
@@ -69,7 +69,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// ─── Login ─────────────────────────────────────────────────────────────────
+//  Login 
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -81,10 +81,10 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// ─── Logout ────────────────────────────────────────────────────────────────
+//  Logout 
 router.post('/logout', (req, res) => res.json({ success: true }));
 
-// ─── Forgot Password ───────────────────────────────────────────────────────
+//  Forgot Password 
 router.post('/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;
@@ -100,11 +100,11 @@ router.post('/forgot-password', async (req, res) => {
     await resend.emails.send({
       from: 'Sokoni Kenya <noreply@kenyamarketplace.co.ke>',
       to: email,
-      subject: '🔐 Reset your password – Sokoni Kenya',
+      subject: ' Reset your password – Sokoni Kenya',
       html: `
         <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb">
           <div style="background:linear-gradient(135deg,#1f2937,#374151);padding:32px;text-align:center">
-            <h1 style="color:#f97316;margin:0">🔐 Password Reset</h1>
+            <h1 style="color:#f97316;margin:0"> Password Reset</h1>
           </div>
           <div style="padding:32px">
             <h2 style="color:#1f2937">Reset your password</h2>
@@ -121,7 +121,7 @@ router.post('/forgot-password', async (req, res) => {
   }
 });
 
-// ─── Reset Password ────────────────────────────────────────────────────────
+//  Reset Password 
 router.post('/reset-password', async (req, res) => {
   try {
     const { token, password } = req.body;
@@ -141,7 +141,7 @@ router.post('/reset-password', async (req, res) => {
   }
 });
 
-// ─── Support ticket (public) ───────────────────────────────────────────────
+//  Support ticket (public) 
 router.post('/support', async (req, res) => {
   try {
     const { name, email, subject, message, priority = 'medium' } = req.body;
@@ -161,14 +161,14 @@ router.post('/support', async (req, res) => {
       await resend.emails.send({
         from: 'Sokoni Kenya <noreply@kenyamarketplace.co.ke>',
         to: 'chrisotieno026@gmail.com',
-        subject: `🎫 New Support Ticket: ${subject}`,
+        subject: ` New Support Ticket: ${subject}`,
         html: `<div style="font-family:sans-serif;padding:24px"><h2>New Support Ticket</h2><p><strong>From:</strong> ${name} (${email})</p><p><strong>Subject:</strong> ${subject}</p><p><strong>Priority:</strong> ${priority}</p><p><strong>Message:</strong></p><p style="background:#f9fafb;padding:16px;border-radius:8px">${message}</p></div>`,
       });
       // Confirm to user
       await resend.emails.send({
         from: 'Sokoni Kenya <noreply@kenyamarketplace.co.ke>',
         to: email,
-        subject: '✅ We received your support request',
+        subject: ' We received your support request',
         html: `<div style="font-family:sans-serif;padding:24px"><h2>Hi ${name},</h2><p>We've received your support request and will respond within 24 hours.</p><p><strong>Subject:</strong> ${subject}</p><p>WhatsApp us for urgent help: <strong>0742 791 838</strong></p></div>`,
       });
     } catch (emailErr) { console.error('Support email failed:', emailErr.message); }
@@ -179,7 +179,7 @@ router.post('/support', async (req, res) => {
   }
 });
 
-// ─── Get current user ──────────────────────────────────────────────────────
+//  Get current user 
 router.get('/me', async (req, res) => {
   try {
     const token = req.headers.authorization?.replace('Bearer ', '');

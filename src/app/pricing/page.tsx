@@ -30,11 +30,11 @@ export default function PricingPage() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 mb-6">
-                <li>✓ Unlimited listings</li>
-                <li>✓ Buyer and seller dashboards</li>
-                <li>✓ Favorites and messaging</li>
-                <li>✓ Admin moderation workflow</li>
-                <li>✓ AI-assisted listing tools</li>
+                <li> Unlimited listings</li>
+                <li> Buyer and seller dashboards</li>
+                <li> Favorites and messaging</li>
+                <li> Admin moderation workflow</li>
+                <li> AI-assisted listing tools</li>
               </ul>
               <Link href="/register"><Button className="w-full">Start Free</Button></Link>
             </CardContent>

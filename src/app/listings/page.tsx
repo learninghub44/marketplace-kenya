@@ -184,7 +184,7 @@ function ListingsContent() {
           </div>
         ) : listings.length === 0 ? (
           <div className="text-center py-24 bg-white dark:bg-gray-800 rounded-2xl">
-            <p className="text-5xl mb-4">🔍</p>
+            <p className="text-5xl mb-4"></p>
             <h3 className="text-xl font-bold dark:text-white">No listings found</h3>
             <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm">Try a different search term, category, or location</p>
             <button onClick={() => { setSearch(''); setCategory('All'); setLocation('All Locations') }}

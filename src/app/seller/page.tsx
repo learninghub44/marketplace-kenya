@@ -75,7 +75,7 @@ export default function SellerDashboard() {
       <div className="container mx-auto px-4 py-6 max-w-4xl space-y-6">
         {/* Welcome */}
         <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-6 text-white">
-          <h1 className="text-2xl font-black">Welcome back, {user?.name || user?.email?.split('@')[0]}! 👋</h1>
+          <h1 className="text-2xl font-black">Welcome back, {user?.name || user?.email?.split('@')[0]}! </h1>
           <p className="text-gray-400 text-sm mt-1">Manage your listings and track performance</p>
           <Link href="/seller/listings/create" className="mt-4 inline-flex items-center gap-2 bg-orange-400 hover:bg-orange-500 text-gray-900 font-bold px-5 py-2.5 rounded-lg transition-colors">
             <Plus className="h-4 w-4" />Create New Listing

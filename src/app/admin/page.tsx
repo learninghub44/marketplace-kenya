@@ -136,7 +136,7 @@ export default function AdminDashboard() {
               {/* Pending Listings */}
               {tab === 'pending' && (
                 <div className="space-y-3">
-                  {pendingListings.length === 0 ? <div className="text-center py-12 text-gray-400">✅ No pending listings</div> :
+                  {pendingListings.length === 0 ? <div className="text-center py-12 text-gray-400"> No pending listings</div> :
                     [...pendingListings].sort((a, b) => (b.ai_flagged === a.ai_flagged ? (b.ai_fraud_score || 0) - (a.ai_fraud_score || 0) : (b.ai_flagged ? 1 : 0) - (a.ai_flagged ? 1 : 0))).map(listing => (
                       <div key={listing.id} className={`border rounded-xl p-4 ${listing.ai_flagged || listing.ai_fraud_score >= 0.5 ? 'border-red-300 bg-red-50' : 'border-gray-200'}`}>
                         <div className="flex items-start justify-between gap-4">
@@ -188,7 +188,7 @@ export default function AdminDashboard() {
               {/* Reports */}
               {tab === 'reports' && (
                 <div className="space-y-3">
-                  {reports.length === 0 ? <div className="text-center py-12 text-gray-400">✅ No pending reports</div> :
+                  {reports.length === 0 ? <div className="text-center py-12 text-gray-400"> No pending reports</div> :
                     reports.map(report => (
                       <div key={report.id} className="border border-gray-200 rounded-xl p-4">
                         <div className="flex items-center justify-between">
@@ -206,7 +206,7 @@ export default function AdminDashboard() {
               {/* Support Tickets */}
               {tab === 'tickets' && (
                 <div className="space-y-3">
-                  {tickets.length === 0 ? <div className="text-center py-12 text-gray-400">✅ No open tickets</div> :
+                  {tickets.length === 0 ? <div className="text-center py-12 text-gray-400"> No open tickets</div> :
                     tickets.map(ticket => (
                       <div key={ticket.id} className="border border-gray-200 rounded-xl p-4">
                         <div className="flex items-start justify-between gap-4">
@@ -271,7 +271,7 @@ export default function AdminDashboard() {
             <Ticket className="h-5 w-5 text-orange-500" /><span className="font-semibold">Support Center</span>
           </Link>
           <a href="https://wa.me/254701059192" target="_blank" rel="noopener noreferrer" className="bg-green-50 rounded-xl p-4 shadow-sm hover:shadow-md flex items-center gap-3 transition-shadow">
-            <span className="text-green-600 font-semibold">📱 WhatsApp Support</span>
+            <span className="text-green-600 font-semibold"> WhatsApp Support</span>
           </a>
         </div>
       </div>

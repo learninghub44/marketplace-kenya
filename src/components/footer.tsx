@@ -71,7 +71,7 @@ export default function Footer() {
               </li>
             </ul>
             <div className="mt-4 p-3 bg-gray-800 dark:bg-gray-900 rounded-lg text-xs text-gray-400">
-              <p className="font-semibold text-white text-xs mb-1">🕒 Support Hours</p>
+              <p className="font-semibold text-white text-xs mb-1"> Support Hours</p>
               <p>Mon–Sat: 8:00am – 8:00pm</p>
               <p>Sun: 10:00am – 4:00pm</p>
             </div>
@@ -81,10 +81,10 @@ export default function Footer() {
         {/* Trust badges */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8 pt-8 border-t border-gray-800">
           {[
-            { icon: '🔒', label: 'Secure Platform' },
-            { icon: '✅', label: 'Verified Sellers' },
-            { icon: '📱', label: 'M-Pesa Payments' },
-            { icon: '🇰🇪', label: '47 Counties' },
+            { icon: '', label: 'Secure Platform' },
+            { icon: '', label: 'Verified Sellers' },
+            { icon: '', label: 'M-Pesa Payments' },
+            { icon: '', label: '47 Counties' },
           ].map(b => (
             <div key={b.label} className="flex items-center gap-2 text-xs text-gray-400">
               <span className="text-base">{b.icon}</span>{b.label}
@@ -94,7 +94,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-6 pt-6 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
-          <p>© 2026 Sokoni Kenya · Free marketplace for everyone 🇰🇪</p>
+          <p>© 2026 Sokoni Kenya · Free marketplace for everyone </p>
           <div className="flex gap-4">
             <Link href="/support" className="hover:text-gray-300 transition-colors">Terms</Link>
             <Link href="/support" className="hover:text-gray-300 transition-colors">Privacy</Link>

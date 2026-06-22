@@ -76,7 +76,7 @@ export default function BuyerDashboard() {
         {/* Welcome */}
         <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-5 text-white flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-black">Hi, {user?.name || user?.email?.split('@')[0]}! 👋</h1>
+            <h1 className="text-xl font-black">Hi, {user?.name || user?.email?.split('@')[0]}! </h1>
             <p className="text-gray-400 text-sm mt-0.5">Discover great deals from Kenyan sellers</p>
           </div>
           <Link href="/support" className="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg transition-colors">Help</Link>
@@ -98,7 +98,7 @@ export default function BuyerDashboard() {
             <div className="flex items-center justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-orange-400" /></div>
           ) : filtered.length === 0 ? (
             <div className="text-center py-16 bg-white rounded-xl">
-              <p className="text-4xl mb-3">🔍</p>
+              <p className="text-4xl mb-3"></p>
               <h3 className="font-bold text-gray-900">No results for "{search}"</h3>
               <button onClick={() => setSearch('')} className="mt-3 text-orange-500 text-sm underline">Clear search</button>
             </div>

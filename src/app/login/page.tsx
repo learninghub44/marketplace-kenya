@@ -98,7 +98,7 @@ export default function LoginPage() {
               </div>
 
               <div className="mt-4 bg-orange-50 border border-orange-100 rounded-lg p-3 text-xs text-center text-gray-600">
-                🛒 <strong>Sellers</strong> can list products for free · <strong>Buyers</strong> browse and message sellers
+                 <strong>Sellers</strong> can list products for free · <strong>Buyers</strong> browse and message sellers
               </div>
             </div>
           </div>
