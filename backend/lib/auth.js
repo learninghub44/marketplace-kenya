@@ -2,7 +2,12 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { supabaseAdmin } = require('../config/supabase');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-key';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  // See routes/auth.js for why this throws instead of falling back to a
+  // hardcoded default — a guessable secret lets anyone forge valid tokens.
+  throw new Error('JWT_SECRET environment variable is not set. Refusing to start with an insecure default.');
+}
 
 const hashPassword = async (password) => bcrypt.hash(password, await bcrypt.genSalt(10));
 

@@ -6,20 +6,37 @@ const { Resend } = require('resend');
 const jwt = require('jsonwebtoken');
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  // Failing loudly here is intentional: a missing secret previously fell back
+  // to a hardcoded literal, which means anyone could forge valid auth tokens
+  // (including admin tokens) for this app. Better to refuse to boot than to
+  // silently run with a known, guessable secret.
+  throw new Error('JWT_SECRET environment variable is not set. Refusing to start with an insecure default.');
+}
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 
-//  Seed admin on first run 
+//  Seed admin on first run — only if explicitly configured via env vars.
+// Previously this hardcoded a real admin email + password directly in source
+// control (now public on GitHub) and re-created that account on every boot.
+// That credential should be treated as compromised — rotate it in Supabase
+// regardless of this code change, since this fix only prevents it from being
+// re-seeded going forward; it does not undo prior exposure.
 const ensureAdmin = async () => {
+  const adminEmail = process.env.SEED_ADMIN_EMAIL;
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD;
+  if (!adminEmail || !adminPassword) {
+    console.log('SEED_ADMIN_EMAIL / SEED_ADMIN_PASSWORD not set — skipping admin auto-seed. Create admin accounts manually via Supabase.');
+    return;
+  }
   try {
-    const adminEmail = 'chrisotieno026@gmail.com';
     const { data: existing } = await supabaseAdmin.from('users').select('id').eq('email', adminEmail).maybeSingle();
     if (!existing) {
       const bcryptLib = require('bcryptjs');
-      const password_hash = await bcryptLib.hash('Facebook@2025', 10);
+      const password_hash = await bcryptLib.hash(adminPassword, 10);
       // Don't pass tenant_id — let DB DEFAULT generate it
       const { data, error } = await supabaseAdmin.from('users')
-        .insert({ email: adminEmail, password_hash, role: 'admin', phone: '+254701059192' })
+        .insert({ email: adminEmail, password_hash, role: 'admin' })
         .select().single();
       if (error) console.error('Admin seed error:', error.message);
       else console.log(' Admin created:', adminEmail);
