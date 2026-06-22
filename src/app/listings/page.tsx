@@ -2,9 +2,10 @@
 import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { Heart, MessageCircle, MapPin, Tag, Loader2, Grid, List, SlidersHorizontal, ChevronDown } from 'lucide-react'
+import { Tag, Loader2, Grid, List, SlidersHorizontal, ChevronDown } from 'lucide-react'
 import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
+import ProductCard from '@/components/product-card'
 import { getUser, authHeaders } from '@/lib/auth'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
@@ -86,32 +87,12 @@ function ListingsContent() {
   }
 
   const ListingCard = ({ listing }: { listing: any }) => (
-    <div className={`bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group ${view === 'list' ? 'flex gap-3' : ''}`}>
-      <div className={`relative flex-shrink-0 ${view === 'list' ? 'w-28 h-28' : 'h-44'} overflow-hidden`}>
-        {listing.images?.[0] ? (
-          <img src={listing.images[0]} alt={listing.title} className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-300`} />
-        ) : (
-          <div className="w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center"><Tag className="h-8 w-8 text-gray-300" /></div>
-        )}
-        <button onClick={e => toggleFav(listing.id, e)} className="absolute top-2 right-2 bg-white/90 dark:bg-gray-800/90 p-1.5 rounded-full shadow hover:scale-110 transition-transform">
-          <Heart className={`h-3.5 w-3.5 ${favorites.has(listing.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}`} />
-        </button>
-        <span className="absolute top-2 left-2 bg-gray-900/70 text-white text-xs px-1.5 py-0.5 rounded">{listing.category}</span>
-      </div>
-      <div className={`p-3 flex flex-col justify-between flex-1 ${view === 'list' ? 'py-3' : ''}`}>
-        <div className="space-y-1">
-          <h3 className="font-bold text-gray-900 dark:text-white text-sm line-clamp-2 leading-tight">{listing.title}</h3>
-          <p className="text-orange-500 font-black text-base">KES {listing.price?.toLocaleString()}</p>
-          <p className="text-gray-400 text-xs flex items-center gap-1"><MapPin className="h-3 w-3" />{listing.location}</p>
-          {view === 'list' && listing.description && <p className="text-gray-500 dark:text-gray-400 text-xs line-clamp-2 hidden sm:block">{listing.description}</p>}
-        </div>
-        <a href={`https://wa.me/254701059192?text=Hi, I'm interested in: ${listing.title} - KES ${listing.price?.toLocaleString()}`}
-          target="_blank" rel="noopener noreferrer"
-          className="mt-2 flex items-center justify-center gap-1 bg-green-600 hover:bg-green-700 text-white text-xs py-2 rounded-lg font-semibold transition-colors">
-          <MessageCircle className="h-3 w-3" />Contact Seller
-        </a>
-      </div>
-    </div>
+    <ProductCard
+      listing={listing}
+      view={view}
+      favorited={favorites.has(listing.id)}
+      onToggleFavorite={toggleFav}
+    />
   )
 
   return (
@@ -184,7 +165,9 @@ function ListingsContent() {
           </div>
         ) : listings.length === 0 ? (
           <div className="text-center py-24 bg-white dark:bg-gray-800 rounded-2xl">
-            <p className="text-5xl mb-4"></p>
+            <div className="w-14 h-14 rounded-full bg-orange-50 dark:bg-orange-950 flex items-center justify-center mx-auto mb-4">
+              <Tag className="h-6 w-6 text-orange-400" />
+            </div>
             <h3 className="text-xl font-bold dark:text-white">No listings found</h3>
             <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm">Try a different search term, category, or location</p>
             <button onClick={() => { setSearch(''); setCategory('All'); setLocation('All Locations') }}

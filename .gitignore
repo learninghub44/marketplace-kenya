@@ -36,3 +36,4 @@ replit.md
 -e .next/
 .open-next/
 out/
+tsconfig.tsbuildinfo

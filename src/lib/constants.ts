@@ -53,3 +53,9 @@ export const CATEGORIES = [
   'Services',
   'Other',
 ]
+
+// Centralized so new components don't hardcode this in multiple places.
+// NOTE: many existing pages (footer, navbar, support, buyer/seller dashboards)
+// still hardcode this string directly — left untouched in this pass to keep
+// the design-system change additive and low-risk. Worth a follow-up cleanup.
+export const SUPPORT_WHATSAPP_NUMBER = '254701059192'
