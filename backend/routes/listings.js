@@ -87,6 +87,11 @@ router.get('/:id', async (req, res) => {
 // POST create listing (seller)
 router.post('/', authenticate, authorize('seller'), async (req, res) => {
   try {
+    const { data: seller } = await supabaseAdmin.from('sellers').select('kyc_status').eq('id', req.user.userId).maybeSingle();
+    if (seller?.kyc_status !== 'approved') {
+      return res.status(403).json({ success: false, error: 'Identity verification required before you can create listings. Complete KYC verification first.', kyc_status: seller?.kyc_status || 'not_started' });
+    }
+
     const { title, description, price, category, location, images = [] } = req.body;
     if (!title || !description || !price || !category || !location)
       return res.status(400).json({ success: false, error: 'Title, description, price, category and location are required' });

@@ -2,12 +2,14 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ShoppingBag, Sparkles, Loader2, ArrowLeft, AlertCircle, CheckCircle } from 'lucide-react'
+import { ShoppingBag, Sparkles, Loader2, ArrowLeft, AlertCircle, CheckCircle, ShieldAlert } from 'lucide-react'
 import { getToken, getUser, authHeaders } from '@/lib/auth'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
 const CATEGORIES = ['Electronics','Fashion','Home & Garden','Vehicles','Agriculture','Sports','Baby & Kids','Property','Services','Health & Beauty','Business','Education']
 const LOCATIONS = ['Nairobi','Mombasa','Kisumu','Nakuru','Eldoret','Thika','Malindi','Kitale','Nyeri','Garissa','Kakamega','Meru']
+
+type KycStatus = 'not_started' | 'pending' | 'approved' | 'rejected' | 'checking'
 
 export default function CreateListingPage() {
   const router = useRouter()
@@ -17,11 +19,21 @@ export default function CreateListingPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [aiUsed, setAiUsed] = useState(false)
+  const [kycStatus, setKycStatus] = useState<KycStatus>('checking')
 
   useEffect(() => {
     const u = getUser()
-    if (!u || u.role !== 'seller') router.push('/login')
+    if (!u || u.role !== 'seller') { router.push('/login'); return }
+    checkKyc()
   }, [])
+
+  const checkKyc = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/api/seller/kyc-status`, { headers: authHeaders() })
+      const data = await res.json()
+      setKycStatus(data.success ? data.status : 'not_started')
+    } catch { setKycStatus('not_started') }
+  }
 
   const generateWithAI = async () => {
     if (!form.title || !form.category) return setError('Enter a product name and select a category first')
@@ -49,10 +61,34 @@ export default function CreateListingPage() {
       })
       const data = await res.json()
       if (data.success) setSuccess(true)
-      else setError(data.error || 'Failed to create listing')
+      else { setError(data.error || 'Failed to create listing'); if (data.kyc_status) setKycStatus(data.kyc_status) }
     } catch { setError('Connection failed. Try again.') }
     finally { setLoading(false) }
   }
+
+  if (kycStatus === 'checking') return (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <Loader2 className="h-8 w-8 text-orange-400 animate-spin" />
+    </div>
+  )
+
+  if (kycStatus !== 'approved') return (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-lg p-10 text-center max-w-sm w-full space-y-4">
+        <ShieldAlert className="h-16 w-16 text-orange-500 mx-auto" />
+        <h2 className="text-2xl font-black text-gray-900">Verification Required</h2>
+        <p className="text-gray-500 text-sm">
+          {kycStatus === 'pending'
+            ? "Your identity verification is still being reviewed. We'll notify you by email once it's complete — then you can create listings."
+            : "To keep buyers safe, sellers must verify their identity before listing products. It only takes a few minutes."}
+        </p>
+        <Link href="/seller/kyc" className="block w-full bg-orange-500 hover:bg-orange-600 text-white font-black py-3 rounded-lg text-sm">
+          {kycStatus === 'pending' ? 'Check Verification Status' : 'Verify My Identity'}
+        </Link>
+        <Link href="/seller" className="block w-full text-center py-2 text-gray-400 font-semibold text-sm">Back to Dashboard</Link>
+      </div>
+    </div>
+  )
 
   if (success) return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
