@@ -4,7 +4,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 
 export const metadata: Metadata = {
   title: 'Sokoni Kenya – Buy & Sell Anything in Kenya',
-  description: "Kenya's trusted free marketplace. Buy and sell electronics, fashion, vehicles, property and more across all 47 counties.",
+  description: "Kenya's trusted free marketplace. Buy and sell electronics, fashion, vehicles, property and more — safely and for free.",
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -46,7 +46,7 @@ export default function Navbar({ onSearch }: NavbarProps) {
     <>
       <div className="bg-gray-900 text-xs hidden sm:block">
         <div className="container mx-auto px-4 max-w-7xl flex justify-between py-1.5 text-gray-400">
-          <div className="flex items-center gap-1"><MapPin className="h-3 w-3" /> Delivering across all 47 counties</div>
+          <div className="flex items-center gap-1"><MapPin className="h-3 w-3" /> Nationwide delivery across Kenya</div>
           <div className="flex gap-4">
             <a href="https://wa.me/254701059192" target="_blank" rel="noopener noreferrer" className="hover:text-orange-400">WhatsApp Support</a>
             <Link href="/support" className="hover:text-orange-400">Help Centre</Link>
